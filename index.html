@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroNotes | Smart Note Manager</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0f0f1f;
+            --secondary-bg: rgba(255, 255, 255, 0.05);
+            --accent: #6c63ff;
+            --accent-hover: #827bff;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background gradient */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, #1a1a2e 0%, #0f0f1f 100%);
+            z-index: -1;
+        }
+
+        #sidebar {
+            width: 280px;
+            background: var(--secondary-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-right: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #notes-list {
+            width: 320px;
+            background: var(--secondary-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-right: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #content {
+            flex: 1;
+            background: var(--secondary-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .course-item, .note-item {
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-item:hover, .note-item:hover {
+            background: rgba(108, 99, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .course-item.active, .note-item.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3);
+        }
+
+        #search {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
+        }
+
+        /* Markdown content styling */
+        #content h1, #content h2, #content h3 {
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        #content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        #content code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        #content a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent);
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
+        }
+
+        .fa-folder, .fa-file-alt {
+            color: var(--accent);
+            font-size: 1.2em;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    
+    <div id="sidebar">
+        <h2><i class="fas fa-book-open"></i> Courses</h2>
+        <div id="courses"></div>
+    </div>
+
+    <div id="notes-list">
+        <h2><i class="fas fa-file-alt"></i> Notes</h2>
+        <input type="text" id="search" placeholder="🔍 Search notes...">
+        <div id="notes"></div>
+    </div>
+
+    <div id="content"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
