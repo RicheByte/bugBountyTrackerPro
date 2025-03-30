@@ -2,7 +2,7 @@
 const courses = [
     {
         name: "Devops",
-        path: "/NOTES/DEVOPS",
+        path: "./NOTES/DEVOP",
         notes: ["I - File Handling and Text Processing in Linux CLI.md"]
     },
     {
