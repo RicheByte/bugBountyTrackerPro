@@ -63,33 +63,25 @@ function loadCourse(course) {
     document.getElementById('content').innerHTML = '';
 }
 
+// Change the loadNote function to:
 async function loadNote(noteFile) {
     try {
-        // Log to see the path and note being loaded
-        console.log(`Loading note from path: ${currentCourse.path}/${noteFile}`);
-
-        const response = await fetch(`${currentCourse.path}/${noteFile}`);
-
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error(`Failed to load note: ${response.statusText}`);
-        }
-
-        // Get markdown content from the note
+        const encodedNote = encodeURIComponent(noteFile);
+        console.log("Fetching:", `${currentCourse.path}/${encodedNote}`);
+        const response = await fetch(`${currentCourse.path}/${encodedNote}`);
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
         const markdown = await response.text();
-
-        // Remove active class from all notes
-        document.querySelectorAll('.note-item').forEach(item => item.classList.remove('active'));
-
-        // Add active class to the selected note
-        document.getElementById(noteFile).classList.add('active');
-
-        // Convert markdown to HTML and insert it into the content div
         document.getElementById('content').innerHTML = marked.parse(markdown);
     } catch (error) {
-        // Log and show an error message if something goes wrong
-        console.error(error);
-        document.getElementById('content').innerHTML = `<p>Error loading note: ${error.message}</p>`;
+        document.getElementById('content').innerHTML = `
+            <div class="error">
+                <h3>Failed to load note</h3>
+                <p>${error.message}</p>
+                <p>Full path: <code>${window.location.origin}${currentCourse.path}/${encodedNote}</code></p>
+            </div>
+        `;
     }
 }
 
