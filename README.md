@@ -21,3 +21,14 @@ This repository serves as my digital notebook, where I document key concepts, id
 I continuously update this repository as I learn new things. Stay tuned for more insights!
 
 ---
+
+## 📚 Table of Contents
+
+- [linux](linux)
+- [Networking](networking)
+- [pentensting](pentenst)
+
+---
+
+- [linux](linux)
+--- [I - File Handling and Text Processing in Linux CLI](linux/)
