@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Linux Notes</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .file-list { list-style: none; padding: 0; }
+        .file-item { margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .file-title { font-weight: bold; color: #0366d6; text-decoration: none; }
+        .commit-info { font-size: 0.9em; color: #666; margin-top: 5px; }
+        #content { margin-top: 30px; padding: 20px; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <h1>MyNotes / Linux /</h1>
+    
+    <ul class="file-list">
+        <!-- Repeat this block for each file -->
+        <li class="file-item">
+            <a href="https://raw.githubusercontent.com/RicheByte/MyNotes/main/Linux/I%20-%20File%20Handling%20and%20Text%20Processing%20in%20Linux%20CL1.md" 
+               class="file-title" 
+               onclick="loadContent(event, this.href)">
+                I - File Handling and Text Processing in Linux
+            </a>
+            <div class="commit-info">
+                Add files via upload<br>
+                yesterday
+            </div>
+        </li>
+        <!-- Add other files following the same pattern -->
+    </ul>
+
+    <div id="content"></div>
+
+    <script>
+        async function loadContent(event, url) {
+            event.preventDefault();
+            
+            try {
+                const response = await fetch(url);
+                const markdown = await response.text();
+                document.getElementById('content').innerHTML = marked.parse(markdown);
+            } catch (error) {
+                document.getElementById('content').innerHTML = 
+                    `<p>Error loading content: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
