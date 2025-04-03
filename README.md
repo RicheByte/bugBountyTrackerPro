@@ -29,7 +29,3 @@ I continuously update this repository as I learn new things. Stay tuned for more
 - [pentensting](pentenst)
 
 ---
-
-- [linux](linux)
-- -[I - File Handling and Text Processing in Linux CLI](https://github.com/RicheByte/MyNotes/blob/main/Linux/I%20-%20File%20Handling%20and%20Text%20Processing%20in%20Linux%20CLI.md)
-
