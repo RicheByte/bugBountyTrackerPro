@@ -2,51 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Linux Notes</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .file-list { list-style: none; padding: 0; }
-        .file-item { margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .file-title { font-weight: bold; color: #0366d6; text-decoration: none; }
-        .commit-info { font-size: 0.9em; color: #666; margin-top: 5px; }
-        #content { margin-top: 30px; padding: 20px; border: 1px solid #eee; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec Articles</title>
+    <link rel="stylesheet" href="cyberstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>MyNotes / Linux /</h1>
-    
-    <ul class="file-list">
-        <!-- Repeat this block for each file -->
-        <li class="file-item">
-            <a href="https://raw.githubusercontent.com/RicheByte/MyNotes/main/Linux/I%20-%20File%20Handling%20and%20Text%20Processing%20in%20Linux%20CL1.md" 
-               class="file-title" 
-               onclick="loadContent(event, this.href)">
-                I - File Handling and Text Processing in Linux
-            </a>
-            <div class="commit-info">
-                Add files via upload<br>
-                yesterday
-            </div>
-        </li>
-        <!-- Add other files following the same pattern -->
-    </ul>
+    <div class="matrix-grid"></div>
 
-    <div id="content"></div>
+    <!-- Enhanced Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                
+                <li><a href="index.html" class="nav-link active">/articles</a></li>
+                <li><a href="#resources" class="nav-link">/resources</a></li>
+                <li><a href="#contact" class="nav-link">/contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="article-grid">
+        <a href="test.html" class="article-card">
+            <h3>Linux Security Fundamentals</h3>
+            <p class="article-excerpt">Master Linux system hardening and security protocols</p>
+            <p class="article-date">2025-03-15</p>
+        </a>
+        <a href="test.html" class="article-card">
+            <h3>Network Defense Tactics</h3>
+            <p class="article-excerpt">Advanced network monitoring and intrusion detection</p>
+            <p class="article-date">2025-03-14</p>
+        </a>
+        <a href="test.html" class="article-card">
+            <h3>Cryptography Essentials</h3>
+            <p class="article-excerpt">Modern encryption techniques and implementations</p>
+            <p class="article-date">2025-03-13</p>
+        </a>
+        <a href="test.html" class="article-card">
+            <h3>Ethical Hacking Guide</h3>
+            <p class="article-excerpt">Penetration testing methodologies and tools</p>
+            <p class="article-date">2025-03-12</p>
+        </a>
+        <a href="test.html" class="article-card">
+            <h3>Malware Analysis</h3>
+            <p class="article-excerpt">Reverse engineering and threat analysis techniques</p>
+            <p class="article-date">2025-03-11</p>
+        </a>
+        <a href="test.html" class="article-card">
+            <h3>Cloud Security</h3>
+            <p class="article-excerpt">Securing distributed systems and cloud infrastructure</p>
+            <p class="article-date">2025-03-10</p>
+        </a>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Explorer</h4>
+                <ul class="footer-links">
+                    <li><a href="/docs">Documentation</a></li>
+                    <li><a href="/tools">Security Tools</a></li>
+                    <li><a href="/blog">Cyber Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Defend</h4>
+                <ul class="footer-links">
+                    <li><a href="/security">Security Audit</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/report">Report Vulnerability</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 CyberSec Hub. All rights reserved.</p>
+            <p>Encrypted with 🔒 AES-256 | Served from 🗄️ bunker-04</p>
+        </div>
+    </footer>
 
     <script>
-        async function loadContent(event, url) {
-            event.preventDefault();
-            
-            try {
-                const response = await fetch(url);
-                const markdown = await response.text();
-                document.getElementById('content').innerHTML = marked.parse(markdown);
-            } catch (error) {
-                document.getElementById('content').innerHTML = 
-                    `<p>Error loading content: ${error.message}</p>`;
-            }
-        }
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        });
     </script>
 </body>
 </html>
