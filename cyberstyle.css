@@ -1,0 +1,610 @@
+
+/* cyberstyle.css - Enhanced Cyberpunk Theme */
+:root {
+  --terminal-green: #00ff9d;
+  --matrix-green: #ffffff;
+  --neon-blue: #007bff;
+  --background: #0a0a0a;
+  --nav-height: 70px;
+  --cyber-gradient: linear-gradient(
+    45deg,
+    var(--terminal-green),
+    var(--neon-blue)
+  );
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier Prime', monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+body {
+  background: var(--background);
+  color: var(--matrix-green);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  font-size: 18px;
+  min-height: 100vh;
+}
+
+/* Enhanced Matrix Grid */
+.matrix-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(0, 123, 255, 0.05) 0%, transparent 50%);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+  animation: gridScan 20s linear infinite;
+}
+
+@keyframes gridScan {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+/* Cyberpunk Glow Effects */
+.cyber-glow {
+  text-shadow: 0 0 10px var(--terminal-green),
+               0 0 20px var(--terminal-green),
+               0 0 30px var(--terminal-green);
+}
+
+/* Enhanced Article Container */
+.article-container {
+  max-width: 1000px;
+  margin: calc(var(--nav-height) + 3rem) auto 3rem;
+  padding: 3rem;
+  background: rgba(16, 16, 16, 0.95);
+  border: 1px solid var(--terminal-green);
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 255, 157, 0.1),
+              inset 0 0 20px rgba(0, 255, 157, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.article-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: var(--cyber-gradient);
+  opacity: 0.05;
+  z-index: -1;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.article-header {
+  border-bottom: 3px solid var(--terminal-green);
+  padding-bottom: 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.article-header::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: var(--neon-blue);
+}
+
+.article-title {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1px;
+  background: var(--cyber-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.article-content {
+  position: relative;
+  z-index: 2;
+}
+
+.article-content h2 {
+  color: var(--terminal-green);
+  font-size: 2rem;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 255, 157, 0.3);
+  position: relative;
+}
+
+.article-content h2::after {
+  content: '>';
+  position: absolute;
+  right: 0;
+  color: var(--neon-blue);
+}
+
+.article-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* Enhanced Code Blocks */
+.article-content pre {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--terminal-green);
+  box-shadow: 0 0 30px rgba(0, 255, 157, 0.1);
+  margin: 2.5rem 0;
+  position: relative;
+  overflow-x: auto;
+}
+
+.article-content pre::before {
+  content: 'CODE';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--terminal-green);
+  color: #000;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.article-content code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  color: var(--terminal-green);
+}
+
+/* Article Grid Enhancements */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  padding: 3rem;
+  max-width: 1400px;
+  margin: calc(var(--nav-height) + 3rem) auto;
+}
+
+.article-card {
+  background: rgba(16, 16, 16, 0.95);
+  border: 1px solid var(--terminal-green);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.article-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 40px rgba(0, 255, 157, 0.2);
+}
+
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: var(--cyber-gradient);
+  opacity: 0.05;
+  z-index: -1;
+  animation: rotate 20s linear infinite;
+}
+
+.article-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  background: var(--cyber-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.article-excerpt {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.article-date {
+  display: inline-block;
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--terminal-green);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+/* Navigation Enhancements */
+.nav-bar {
+  backdrop-filter: blur(10px);
+  background: rgba(16, 16, 16, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 255, 157, 0.2) !important;
+}
+
+.nav-link {
+  position: relative;
+  padding: 1rem 1.5rem !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link::before {
+  content: '➤';
+  margin-right: 0.8rem;
+  color: var(--terminal-green);
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--terminal-green) !important;
+  text-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+}
+
+.nav-link:hover::before {
+  transform: rotate(90deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .article-container {
+    padding: 2rem;
+    margin: calc(var(--nav-height) + 2rem) auto 2rem;
+  }
+
+  .article-title {
+    font-size: 2rem;
+  }
+
+  .article-grid {
+    padding: 2rem;
+    gap: 2rem;
+  }
+}
+
+/* Terminal-like Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-green);
+  border-radius: 4px;
+}
+
+/* Add this after your existing styles */
+
+/* ------------------ */
+/* Navigation Styles */
+/* ------------------ */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(16, 16, 16, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+  z-index: 1000;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--nav-height);
+}
+
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--matrix-green);
+  text-decoration: none;
+  font-size: 1.1rem;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link::before {
+  content: '➤';
+  margin-right: 0.8rem;
+  color: var(--terminal-green);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--terminal-green);
+  text-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+  transform: translateX(-5px);
+}
+
+/* Active state */
+.nav-link.active {
+  color: var(--terminal-green);
+  border-bottom: 2px solid var(--terminal-green);
+}
+
+/* Mobile Menu */
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.menu-toggle .bar {
+  width: 25px;
+  height: 3px;
+  background: var(--terminal-green);
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(16, 16, 16, 0.98);
+    transition: all 0.3s ease;
+    gap: 3rem;
+    padding: 2rem;
+  }
+
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+/* ----------------- */
+/* Footer Styles */
+/* ----------------- */
+.site-footer {
+  background: rgba(16, 16, 16, 0.98);
+  border-top: 1px solid rgba(0, 255, 157, 0.3);
+  padding: 4rem 2rem;
+  margin-top: 6rem;
+  position: relative;
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--terminal-green) 50%,
+    transparent 100%
+  );
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+}
+
+.footer-section h4 {
+  color: var(--terminal-green);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: var(--matrix-green);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--terminal-green);
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.social-links a {
+  color: var(--matrix-green);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--terminal-green);
+}
+
+.footer-bottom {
+  margin-top: 4rem;
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Update your HTML footer to match this structure */
+
+/* ------------------ */
+/* Centered Navigation */
+/* ------------------ */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Added for horizontal centering */
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center; /* Center nav links */
+  align-items: center;
+  position: relative;
+}
+
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  padding: 0;
+  margin: 0;
+}
+
+/* Mobile Menu Centering */
+@media (max-width: 768px) {
+  .nav-links {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ----------------- */
+/* Centered Footer */
+/* ----------------- */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  justify-items: center; /* Center grid items */
+  gap: 3rem;
+}
+
+.footer-section {
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.footer-bottom {
+  width: 100%;
+  max-width: 1400px;
+  margin: 2rem auto 0;
+}
+
+/* Specific Mobile Adjustments */
+@media (max-width: 768px) {
+  .nav-container {
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* Logo Positioning (if you add one later) */
+.nav-logo {
+  position: absolute;
+  left: 2rem;
+  height: 40px;
+}
+
+/* Perfect Vertical Alignment */
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  padding: 0 1.5rem !important;
+}
+
+/* Footer Text Balance */
+.footer-bottom p {
+  text-wrap: balance;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+

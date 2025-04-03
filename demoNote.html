@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Command Reference | CyberSec Hub</title>
+    <link rel="stylesheet" href="cyberstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="matrix-grid"></div>
+
+    <!-- Enhanced Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">/home</a></li>
+                <li><a href="articles.html" class="nav-link active">/articles</a></li>
+                <li><a href="#resources" class="nav-link">/resources</a></li>
+                <li><a href="#contact" class="nav-link">/contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Article Content -->
+    <div class="article-container">
+        <header class="article-header">
+            <h1 class="article-title">Linux Command Reference</h1>
+            <div class="article-meta">
+                <span>Published: 2025-04-03</span>
+                <span> | Category: System Security</span>
+                <span> | 🔖 23 Bookmarks</span>
+            </div>
+        </header>
+
+        <div class="article-content">
+            <div class="command-section">
+                <h2><span class="section-icon">📁</span> File System Operations</h2>
+                <div class="command-group">
+                    <h3>Listing Files</h3>
+                    <div class="command-item">
+                        <pre><code>ls -la</code></pre>
+                        <p class="command-desc">List all files with details</p>
+                    </div>
+                    <div class="command-item">
+                        <pre><code>ls -d .*</code></pre>
+                        <p class="command-desc">Show hidden files only</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>File Operations</h3>
+                    <div class="command-item">
+                        <pre><code>touch filename.txt</code></pre>
+                        <p class="command-desc">Create new file</p>
+                    </div>
+                    <div class="command-item">
+                        <pre><code>rm -rf directory</code></pre>
+                        <p class="command-desc">Remove directory recursively</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-section">
+                <h2><span class="section-icon">🔍</span> Search & Analysis</h2>
+                <div class="command-group">
+                    <div class="command-item">
+                        <pre><code>grep "pattern" file.txt</code></pre>
+                        <p class="command-desc">Search text in files</p>
+                    </div>
+                    <div class="command-item">
+                        <pre><code>find /path -name "*.log"</code></pre>
+                        <p class="command-desc">Find files by extension</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-section">
+                <h2><span class="section-icon">🔒</span> Security & Permissions</h2>
+                <div class="command-group">
+                    <div class="command-item">
+                        <pre><code>chmod 755 file.sh</code></pre>
+                        <p class="command-desc">Set file permissions</p>
+                    </div>
+                    <div class="command-item">
+                        <pre><code>chown user:group file</code></pre>
+                        <p class="command-desc">Change file ownership</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Explorer</h4>
+                <ul class="footer-links">
+                    <li><a href="/docs">Documentation</a></li>
+                    <li><a href="/tools">Security Tools</a></li>
+                    <li><a href="/blog">Cyber Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Defend</h4>
+                <ul class="footer-links">
+                    <li><a href="/security">Security Audit</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/report">Report Vulnerability</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 CyberSec Hub. All rights reserved.</p>
+            <p>Encrypted with 🔒 AES-256 | Served from 🗄️ bunker-04</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
