@@ -1,0 +1,128 @@
+
+/* Modern Dark Theme with Enhanced Letter & Line Spacing */
+
+/* Ultra-minimal reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.8; /* Increased for better readability */
+    font-size: 18px;
+    color: #e0e0e0;
+    background: #121212;
+}
+
+body {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Navigation */
+.main-nav {
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #bbb;
+    margin-right: 1.5rem;
+    letter-spacing: 1.2px;  /* Increased letter spacing */
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #fff;
+}
+
+/* Content Header */
+.content header {
+    margin-bottom: 2rem;
+}
+
+.content h1 {
+    font-size: 2.7rem;
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 1.5px; /* More space between letters */
+    line-height: 1.9; /* More vertical space */
+}
+
+/* Metadata */
+.meta {
+    color: #aaa;
+    font-size: 1rem;
+    line-height: 1.8; /* More spacing */
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #333;
+    margin-top: 3rem;
+    padding: 1rem 0;
+    color: #aaa;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 2; /* More spacing */
+}
+
+/* Archive/Index Page */
+.archive .article-preview {
+    margin-bottom: 2.5rem;
+}
+
+.archive h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    letter-spacing: 1.2px; /* More space for readability */
+    line-height: 1.9;
+}
+
+.archive h2 a {
+    text-decoration: none;
+    color: #bbb;
+    transition: color 0.3s ease;
+}
+
+.archive h2 a:hover {
+    color: #fff;
+}
+
+.archive time {
+    display: block;
+    color: #aaa;
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+/* Paragraphs */
+p {
+    font-size: 1.1rem;
+    line-height: 2.2; /* Generous spacing for easy reading */
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+/* Code Blocks */
+pre {
+    background: #1e1e1e;
+    padding: 1.2rem;
+    overflow-x: auto;
+    font-size: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+    line-height: 1.9;
+}
+
+code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    color: #e0e0e0;
+}
+

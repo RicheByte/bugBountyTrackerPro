@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled Article</title>
+    <link rel="stylesheet" href="minimal.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="articles.html">Archive</a>
+    </nav>
+
+    <article class="content">
+        <header>
+            <h1></h1>
+            <div class="meta">
+                <time>2025-04-04</time>
+            </div>
+        </header>
+        <h3>📌 What is <code>ulimit</code>?</h3>
+<p><code>ulimit</code> is a shell command used to <strong>control the resource limits</strong> for processes run by a user. It is a safeguard that <strong>prevents any single user or process from consuming too many system resources</strong> and potentially crashing the entire system.</p>
+<hr />
+<h3>🚨 Why is it important?</h3>
+<p>Without limits:</p>
+<ul>
+<li>
+<p>A bug or malicious script could open thousands of files</p>
+</li>
+<li>
+<p>A user could fork unlimited processes (fork bomb ☢️)</p>
+</li>
+<li>
+<p>Memory-hungry apps could bring the system to a crawl or crash</p>
+</li>
+</ul>
+<p>So <code>ulimit</code> sets boundaries to protect the system. Think of it as giving everyone a sandbox 🪁, not the whole beach.</p>
+<hr />
+<h2>⚙️ Basic Syntax</h2>
+<pre><code class="language-bash">ulimit [-aHS] [limit]
+</code></pre>
+<ul>
+<li>
+<p><code>-a</code> → Show all limits</p>
+</li>
+<li>
+<p><code>-H</code> → Show/set hard limit (max enforceable)</p>
+</li>
+<li>
+<p><code>-S</code> → Show/set soft limit (can be changed by user)</p>
+</li>
+</ul>
+<hr />
+<h2>🔍 Common <code>ulimit</code> Types</h2>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Flag</th>
+<th>What It Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>open files</code></td>
+<td><code>-n</code></td>
+<td>Max files a process can open</td>
+</tr>
+<tr>
+<td><code>max user processes</code></td>
+<td><code>-u</code></td>
+<td>Max number of processes per user</td>
+</tr>
+<tr>
+<td><code>stack size</code></td>
+<td><code>-s</code></td>
+<td>Max stack size per process</td>
+</tr>
+<tr>
+<td><code>file size</code></td>
+<td><code>-f</code></td>
+<td>Max file size that can be created (in KB)</td>
+</tr>
+<tr>
+<td><code>core file size</code></td>
+<td><code>-c</code></td>
+<td>Size of core dumps</td>
+</tr>
+<tr>
+<td><code>max memory size</code></td>
+<td><code>-m</code></td>
+<td>(Deprecated, use <code>cgroups</code> for this)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>🔧 Examples</h2>
+<h3>🔎 View All Limits:</h3>
+<pre><code class="language-bash">ulimit -a
+</code></pre>
+<h3>📁 Limit Open Files:</h3>
+<pre><code class="language-bash">ulimit -n 1024    # Allow only 1024 open files
+</code></pre>
+<h3>🤖 Limit Number of Processes:</h3>
+<pre><code class="language-bash">ulimit -u 100     # User can only start 100 processes
+</code></pre>
+<h3>⚠️ Hard vs Soft Limits</h3>
+<ul>
+<li>
+<p><strong>Soft limit</strong>: What is currently allowed. Can be increased up to hard limit.</p>
+</li>
+<li>
+<p><strong>Hard limit</strong>: The ceiling. Only root can raise it.</p>
+</li>
+</ul>
+<pre><code class="language-bash">ulimit -Sn 2048    # Set soft limit
+ulimit -Hn         # Show hard limit
+</code></pre>
+<hr />
+<h2>🛠️ Setting Permanent Limits (per user)</h2>
+<p>Edit <code>/etc/security/limits.conf</code> or create a file under <code>/etc/security/limits.d/</code></p>
+<pre><code>kanchuka   soft   nofile   4096
+kanchuka   hard   nofile   8192
+kanchuka   soft   nproc    1000
+kanchuka   hard   nproc    2000
+</code></pre>
+<p>Also ensure <code>/etc/pam.d/common-session</code> has this line:</p>
+<pre><code>session required pam_limits.so
+</code></pre>
+<hr />
+<h2>🔄 For System Services (e.g., Nginx, PostgreSQL)</h2>
+<p>If you're running services with <code>systemd</code>, set limits in the service file:</p>
+<pre><code class="language-ini">[Service]
+LimitNOFILE=65535
+LimitNPROC=4096
+</code></pre>
+<p>Then reload systemd:</p>
+<pre><code class="language-bash">sudo systemctl daemon-reexec
+sudo systemctl restart your-service
+</code></pre>
+<hr />
+<h2>💥 Preventing Fork Bombs</h2>
+<p>Set a reasonable max process limit per user:</p>
+<pre><code class="language-bash">ulimit -u 1000
+</code></pre>
+<p>Or for global safety:</p>
+<pre><code class="language-bash">echo '* hard nproc 2000' &gt;&gt; /etc/security/limits.conf
+</code></pre>
+<hr />
+<h2>🧪 Bonus Debug Tip: Check Limits of Running Processes</h2>
+<pre><code class="language-bash">cat /proc/&lt;PID&gt;/limits
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-bash">cat /proc/1234/limits
+</code></pre>
+<hr />
+<h2>✅ Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show all limits</td>
+<td><code>ulimit -a</code></td>
+</tr>
+<tr>
+<td>Limit open files to 1024</td>
+<td><code>ulimit -n 1024</code></td>
+</tr>
+<tr>
+<td>Limit user processes to 500</td>
+<td><code>ulimit -u 500</code></td>
+</tr>
+<tr>
+<td>Set permanent limit</td>
+<td><code>/etc/security/limits.conf</code></td>
+</tr>
+<tr>
+<td>View process limits</td>
+<td><code>cat /proc/&lt;pid&gt;/limits</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Minimal Publishing</p>
+    </footer>
+</body>
+</html>
