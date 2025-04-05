@@ -1,4 +1,5 @@
-#Shell Scripting- Zero to Advanced Guide
+
+- ##Shell Scripting- Zero to Advanced Guide
 
 Okay, let's embark on this journey into the world of shell scripting, from the absolute basics to advanced concepts. This will be a comprehensive guide, but remember that true mastery comes from _practice_. Type out the examples, experiment, break things (in safe environments!), and fix them.
 
