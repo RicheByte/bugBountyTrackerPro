@@ -1,128 +1,165 @@
+/* 🌙 Elegant & Readable Dark Theme UI */
 
-/* Modern Dark Theme with Enhanced Letter & Line Spacing */
-
-/* Ultra-minimal reset */
-* {
+/* Global Reset and Base Setup */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 html {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.8; /* Increased for better readability */
     font-size: 18px;
-    color: #e0e0e0;
-    background: #121212;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: #e4e4e4;
+    line-height: 1.9;
+    scroll-behavior: smooth;
 }
 
 body {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 840px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Typography Enhancements */
+h1, h2, h3 {
+    color: #ffffff;
+    letter-spacing: 1.3px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+h1 {
+    font-size: 2.6rem;
+    line-height: 1.4;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+p {
+    font-size: 1.15rem;
+    line-height: 2.1;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.6rem;
+    color: #d0d0d0;
 }
 
 /* Navigation */
 .main-nav {
-    border-bottom: 1px solid #333;
+    display: flex;
+    gap: 1.5rem;
     padding: 1rem 0;
-    margin-bottom: 2rem;
+    border-bottom: 1px solid #2a2a2a;
+    margin-bottom: 2.5rem;
 }
 
 .main-nav a {
+    color: #cccccc;
     text-decoration: none;
-    color: #bbb;
-    margin-right: 1.5rem;
-    letter-spacing: 1.2px;  /* Increased letter spacing */
-    transition: color 0.3s ease;
+    font-weight: 500;
+    transition: color 0.25s ease-in-out;
 }
 
 .main-nav a:hover {
-    color: #fff;
+    color: #ffffff;
 }
 
 /* Content Header */
 .content header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
-.content h1 {
-    font-size: 2.7rem;
-    margin-bottom: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 1.5px; /* More space between letters */
-    line-height: 1.9; /* More vertical space */
-}
-
-/* Metadata */
+/* Metadata Styling */
 .meta {
-    color: #aaa;
-    font-size: 1rem;
-    line-height: 1.8; /* More spacing */
+    font-size: 0.95rem;
+    color: #999;
+    margin-top: -0.6rem;
+    margin-bottom: 1.2rem;
 }
 
 /* Footer */
 footer {
-    border-top: 1px solid #333;
-    margin-top: 3rem;
-    padding: 1rem 0;
-    color: #aaa;
-    font-size: 1rem;
+    border-top: 1px solid #2a2a2a;
+    padding: 2rem 0;
     text-align: center;
-    line-height: 2; /* More spacing */
+    color: #888;
+    font-size: 0.95rem;
+    line-height: 2;
+    margin-top: 4rem;
 }
 
-/* Archive/Index Page */
+/* Archive & Preview */
 .archive .article-preview {
     margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #2c2c2c;
 }
 
 .archive h2 {
-    font-size: 1.4rem;
-    font-weight: 500;
+    font-size: 1.5rem;
     margin-bottom: 0.4rem;
-    letter-spacing: 1.2px; /* More space for readability */
-    line-height: 1.9;
+    line-height: 1.7;
+    font-weight: 500;
 }
 
 .archive h2 a {
     text-decoration: none;
-    color: #bbb;
-    transition: color 0.3s ease;
+    color: #c4c4c4;
+    transition: color 0.25s;
 }
 
 .archive h2 a:hover {
-    color: #fff;
+    color: #ffffff;
 }
 
 .archive time {
+    font-size: 0.95rem;
+    color: #999;
     display: block;
-    color: #aaa;
-    font-size: 1rem;
-    line-height: 1.9;
-}
-
-/* Paragraphs */
-p {
-    font-size: 1.1rem;
-    line-height: 2.2; /* Generous spacing for easy reading */
-    letter-spacing: 1px;
-    margin-bottom: 1.5rem;
+    margin-top: 0.2rem;
 }
 
 /* Code Blocks */
 pre {
-    background: #1e1e1e;
+    background-color: #1f1f1f;
+    color: #e0e0e0;
     padding: 1.2rem;
+    border-radius: 8px;
     overflow-x: auto;
     font-size: 1rem;
-    border-radius: 6px;
-    margin: 1.5rem 0;
-    line-height: 1.9;
+    margin: 2rem 0;
+    line-height: 1.8;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
 }
 
 code {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    color: #e0e0e0;
+    font-family: 'Fira Code', Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.95rem;
+    background: #2a2a2a;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    color: #fffbcc;
 }
 
+/* Smooth Transition for Interactions */
+a, button {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
