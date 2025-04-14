@@ -1,4 +1,4 @@
-/* 🌙 Elegant & Readable Dark Theme UI */
+/* 🌙 Elegant Matrix-Inspired Dark Theme with Enhanced Readability */
 
 /* Global Reset and Base Setup */
 *,
@@ -13,8 +13,8 @@ html {
     font-size: 18px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: #121212;
-    color: #e4e4e4;
-    line-height: 1.9;
+    color: #dcdcdc;
+    line-height: 1.85;
     scroll-behavior: smooth;
 }
 
@@ -26,10 +26,11 @@ body {
 
 /* Typography Enhancements */
 h1, h2, h3 {
-    color: #ffffff;
-    letter-spacing: 1.3px;
+    color: #a8f0c6;
+    letter-spacing: 1.2px;
     font-weight: 600;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 4px rgba(168, 240, 198, 0.35);
 }
 
 h1 {
@@ -38,13 +39,17 @@ h1 {
 }
 
 h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.6rem;
 }
 
 p {
     font-size: 1.15rem;
     line-height: 2.1;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     margin-bottom: 1.6rem;
     color: #d0d0d0;
 }
@@ -59,7 +64,7 @@ p {
 }
 
 .main-nav a {
-    color: #cccccc;
+    color: #9de6b0;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.25s ease-in-out;
@@ -77,8 +82,8 @@ p {
 /* Metadata Styling */
 .meta {
     font-size: 0.95rem;
-    color: #999;
-    margin-top: -0.6rem;
+    color: #aaa;
+    margin-top: -0.5rem;
     margin-bottom: 1.2rem;
 }
 
@@ -109,7 +114,7 @@ footer {
 
 .archive h2 a {
     text-decoration: none;
-    color: #c4c4c4;
+    color: #c0f5d0;
     transition: color 0.25s;
 }
 
@@ -141,7 +146,7 @@ code {
     font-family: 'Fira Code', Menlo, Monaco, Consolas, "Courier New", monospace;
     font-size: 0.95rem;
     background: #2a2a2a;
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 4px;
     color: #fffbcc;
 }
