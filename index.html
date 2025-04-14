@@ -1,113 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSec Articles</title>
-    <link rel="stylesheet" href="cyberstyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hacker Blog - Home</title>
+  <!-- You can either link to an external CSS file or include the CSS inline. -->
+  <style>
+    /* 🌙 Elegant Matrix-Inspired Dark Theme with Enhanced Readability */
+
+    /* Global Reset and Base Setup */
+    *,
+    *::before,
+    *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        font-size: 18px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #121212;
+        color: #dcdcdc;
+        line-height: 1.85;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        max-width: 840px;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .main-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #2a2a2a;
+        margin-bottom: 2.5rem;
+    }
+
+    .main-nav a {
+        color: #9de6b0;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.25s ease-in-out;
+    }
+
+    .main-nav a:hover {
+        color: #ffffff;
+    }
+
+    /* Hero Section */
+    .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    .hero h1 {
+        font-size: 3rem;
+        color: #a8f0c6;
+        letter-spacing: 1.2px;
+        margin-bottom: 0.8rem;
+        text-shadow: 0 0 4px rgba(168, 240, 198, 0.35);
+    }
+    .hero p {
+        font-size: 1.25rem;
+        max-width: 600px;
+        margin: 0 auto;
+        color: #d0d0d0;
+    }
+
+    /* Articles Cards Grid */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .card {
+        background: #1e1e1e;
+        padding: 1.5rem;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(157, 230, 176, 0.3);
+    }
+
+    .card h2 {
+        font-size: 1.6rem;
+        margin-bottom: 0.8rem;
+        color: #a8f0c6;
+    }
+
+    .card p {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+        color: #d0d0d0;
+    }
+
+    .card .meta {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-bottom: 1rem;
+    }
+
+    .card a {
+        display: inline-block;
+        padding: 0.6rem 1.2rem;
+        background: #9de6b0;
+        color: #121212;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: background 0.25s ease;
+    }
+
+    .card a:hover {
+        background: #ffffff;
+    }
+
+    /* Footer */
+    footer {
+        border-top: 1px solid #2a2a2a;
+        padding: 2rem 0;
+        text-align: center;
+        color: #888;
+        font-size: 0.95rem;
+        line-height: 2;
+    }
+
+    /* Utility Classes */
+    .text-center {
+        text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="matrix-grid"></div>
-
-    <!-- Enhanced Navigation -->
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="nav-links">
-                
-                <li><a href="index.html" class="nav-link active">/articles</a></li>
-                <li><a href="#resources" class="nav-link">/resources</a></li>
-                <li><a href="#contact" class="nav-link">/contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="article-grid">
-        <a href="demoNote.html" class="article-card">
-            <h3>Linux Security Fundamentals</h3>
-            <p class="article-excerpt">Master Linux system hardening and security protocols</p>
-            <p class="article-date">2025-03-15</p>
-        </a>
-        <a href="test.html" class="article-card">
-            <h3>Network Defense Tactics</h3>
-            <p class="article-excerpt">Advanced network monitoring and intrusion detection</p>
-            <p class="article-date">2025-03-14</p>
-        </a>
-        <a href="test.html" class="article-card">
-            <h3>Cryptography Essentials</h3>
-            <p class="article-excerpt">Modern encryption techniques and implementations</p>
-            <p class="article-date">2025-03-13</p>
-        </a>
-        <a href="test.html" class="article-card">
-            <h3>Ethical Hacking Guide</h3>
-            <p class="article-excerpt">Penetration testing methodologies and tools</p>
-            <p class="article-date">2025-03-12</p>
-        </a>
-        <a href="test.html" class="article-card">
-            <h3>Malware Analysis</h3>
-            <p class="article-excerpt">Reverse engineering and threat analysis techniques</p>
-            <p class="article-date">2025-03-11</p>
-        </a>
-        <a href="test.html" class="article-card">
-            <h3>Cloud Security</h3>
-            <p class="article-excerpt">Securing distributed systems and cloud infrastructure</p>
-            <p class="article-date">2025-03-10</p>
-        </a>
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <a href="#" class="logo">Hacker Blog</a>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Articles</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
     </div>
+  </nav>
 
-    <!-- Enhanced Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Explorer</h4>
-                <ul class="footer-links">
-                    <li><a href="/docs">Documentation</a></li>
-                    <li><a href="/tools">Security Tools</a></li>
-                    <li><a href="/blog">Cyber Blog</a></li>
-                </ul>
-            </div>
+  <!-- Hero Banner -->
+  <section class="hero">
+    <h1>Welcome to Hacker Blog</h1>
+    <p>Dive into the digital realm with in-depth articles on coding, cybersecurity, and all things tech. Stay sharp, stay curious.</p>
+  </section>
 
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                </div>
-            </div>
+  <!-- Articles Cards Section -->
+  <section class="cards-grid">
+    <article class="card">
+      <h2>Exploring Cybersecurity Trends</h2>
+      <div class="meta">Published: July 20, 2025</div>
+      <p>Discover the latest trends in cybersecurity and how emerging technologies are shaping digital defense strategies.</p>
+      <a href="article-1.html">Read More</a>
+    </article>
 
-            <div class="footer-section">
-                <h4>Defend</h4>
-                <ul class="footer-links">
-                    <li><a href="/security">Security Audit</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
-                    <li><a href="/report">Report Vulnerability</a></li>
-                </ul>
-            </div>
-        </div>
+    <article class="card">
+      <h2>Building Your First Hackathon Project</h2>
+      <div class="meta">Published: July 15, 2025</div>
+      <p>Learn how to structure a hackathon project and bring innovative ideas to life using efficient coding practices.</p>
+      <a href="article-2.html">Read More</a>
+    </article>
 
-        <div class="footer-bottom">
-            <p>&copy; 2025 CyberSec Hub. All rights reserved.</p>
-            <p>Encrypted with 🔒 AES-256 | Served from 🗄️ bunker-04</p>
-        </div>
-    </footer>
+    <article class="card">
+      <h2>Mastering Python for Data Science</h2>
+      <div class="meta">Published: July 10, 2025</div>
+      <p>A comprehensive guide to leverage Python libraries for data analysis and machine learning projects.</p>
+      <a href="article-3.html">Read More</a>
+    </article>
+  </section>
 
-    <script>
-        // Mobile Menu Toggle
-        document.addEventListener('DOMContentLoaded', () => {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navLinks = document.querySelector('.nav-links');
-
-            mobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-        });
-    </script>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Hacker Blog. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
