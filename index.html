@@ -1,193 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hacker Blog - Home</title>
-  <!-- You can either link to an external CSS file or include the CSS inline. -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | Hacker Notes</title>
   <style>
-    /* 🌙 Elegant Matrix-Inspired Dark Theme with Enhanced Readability */
-
-    /* Global Reset and Base Setup */
-    *,
-    *::before,
-    *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html {
-        font-size: 18px;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        background-color: #121212;
-        color: #dcdcdc;
-        line-height: 1.85;
-        scroll-behavior: smooth;
+    /* Base Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-        max-width: 840px;
-        margin: 3rem auto;
-        padding: 0 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      line-height: 1.6;
+      padding: 2rem;
     }
 
-    /* Navigation */
-    .main-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1.5rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #2a2a2a;
-        margin-bottom: 2.5rem;
+    a {
+      color: #58a6ff;
+      text-decoration: none;
     }
 
-    .main-nav a {
-        color: #9de6b0;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.25s ease-in-out;
+    a:hover {
+      text-decoration: underline;
     }
 
-    .main-nav a:hover {
-        color: #ffffff;
+    .section-title {
+      font-size: 2rem;
+      color: #79c0ff;
+      margin-bottom: 1rem;
     }
 
-    /* Hero Section */
-    .hero {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-    .hero h1 {
-        font-size: 3rem;
-        color: #a8f0c6;
-        letter-spacing: 1.2px;
-        margin-bottom: 0.8rem;
-        text-shadow: 0 0 4px rgba(168, 240, 198, 0.35);
-    }
-    .hero p {
-        font-size: 1.25rem;
-        max-width: 600px;
-        margin: 0 auto;
-        color: #d0d0d0;
+    .about-container {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
     }
 
-    /* Articles Cards Grid */
-    .cards-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
+    .about-text p {
+      margin-bottom: 1rem;
     }
 
-    .card {
-        background: #1e1e1e;
-        padding: 1.5rem;
-        border: 1px solid #2a2a2a;
-        border-radius: 8px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .about-text strong {
+      color: #ffa657;
     }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(157, 230, 176, 0.3);
-    }
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
 
-    .card h2 {
-        font-size: 1.6rem;
-        margin-bottom: 0.8rem;
-        color: #a8f0c6;
-    }
-
-    .card p {
-        font-size: 1rem;
-        margin-bottom: 1.2rem;
-        color: #d0d0d0;
-    }
-
-    .card .meta {
-        font-size: 0.9rem;
-        color: #aaa;
-        margin-bottom: 1rem;
-    }
-
-    .card a {
-        display: inline-block;
-        padding: 0.6rem 1.2rem;
-        background: #9de6b0;
-        color: #121212;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: 600;
-        transition: background 0.25s ease;
-    }
-
-    .card a:hover {
-        background: #ffffff;
-    }
-
-    /* Footer */
-    footer {
-        border-top: 1px solid #2a2a2a;
-        padding: 2rem 0;
-        text-align: center;
-        color: #888;
-        font-size: 0.95rem;
-        line-height: 2;
-    }
-
-    /* Utility Classes */
-    .text-center {
-        text-align: center;
+      .section-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="main-nav">
-    <a href="#" class="logo">Hacker Blog</a>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Articles</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+
+  <section id="about">
+    <h2 class="section-title">> About_HackerNotes</h2>
+    <div class="about-container">
+      <div class="about-text">
+        <p><strong>HACKER NOTES</strong> (<a href="https://hacker.super.site/" target="_blank">hacker.super.site</a>) is a curated terminal-themed blog by <strong>RicheByte</strong>, designed for IT enthusiasts and cybersecurity learners. Whether you're diving into Linux, exploring networking protocols, or sharpening your ethical hacking skills—this site serves as your command-line companion.</p>
+
+        <p>It goes beyond tutorials—it’s a minimalist space for anyone passionate about the digital frontier. Stay sharp with writeups, quick cheatsheets, and notes grounded in real-world cybersecurity learning.</p>
+
+        <p><strong>Why?</strong> Because the best hackers never stop learning.</p>
+      </div>
     </div>
-  </nav>
-
-  <!-- Hero Banner -->
-  <section class="hero">
-    <h1>Welcome to Hacker Blog</h1>
-    <p>Dive into the digital realm with in-depth articles on coding, cybersecurity, and all things tech. Stay sharp, stay curious.</p>
   </section>
 
-  <!-- Articles Cards Section -->
-  <section class="cards-grid">
-    <article class="card">
-      <h2>Exploring Cybersecurity Trends</h2>
-      <div class="meta">Published: July 20, 2025</div>
-      <p>Discover the latest trends in cybersecurity and how emerging technologies are shaping digital defense strategies.</p>
-      <a href="article-1.html">Read More</a>
-    </article>
-
-    <article class="card">
-      <h2>Building Your First Hackathon Project</h2>
-      <div class="meta">Published: July 15, 2025</div>
-      <p>Learn how to structure a hackathon project and bring innovative ideas to life using efficient coding practices.</p>
-      <a href="article-2.html">Read More</a>
-    </article>
-
-    <article class="card">
-      <h2>Mastering Python for Data Science</h2>
-      <div class="meta">Published: July 10, 2025</div>
-      <p>A comprehensive guide to leverage Python libraries for data analysis and machine learning projects.</p>
-      <a href="article-3.html">Read More</a>
-    </article>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Hacker Blog. All Rights Reserved.</p>
-  </footer>
 </body>
 </html>
