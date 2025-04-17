@@ -2,11 +2,11 @@
 
 ### 🔍 What You’ll Find on HACKER NOTES
 
-- **Linux**:Guides and tips for mastering the Linux operating system.
+- **Linux**: Guides and tips for mastering the Linux operating system.
 
-- **Hacking**:Ethical hacking tutorials and insights into cybersecurity practices.
+- **Hacking**: Ethical hacking tutorials and insights into cybersecurity practices.
 
-- **IT**:Fundamental concepts and tutorials for IT professionals.
+- **IT**: Fundamental concepts and tutorials for IT professionals.
 
 - **Networking**: Resources to understand and manage network systems effectively.
 RicheByte shares regular updates and tutorials, aiming to provide valuable information for those interested in IT and cybersecurity. The site is built using Super.so, offering a clean and user-friendly interface.
