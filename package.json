@@ -1,0 +1,20 @@
+{
+  "name": "bug-bounty-tracker",
+  "version": "1.0.0",
+  "description": "A note-taking app for bug bounty hunters",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dev": "electron . --dev"
+  },
+  "devDependencies": {
+    "electron": "^22.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1"
+  },
+  "author": "Bug Bounty Hunter",
+  "license": "MIT"
+}

@@ -1,0 +1,599 @@
+{
+  "checklist": [
+    {
+      "id": 1,
+      "title": "Preparation & Mindset",
+      "icon": "🧠",
+      "description": "Before starting anything, align your mindset, tools, and targets.",
+      "tasks": [
+        {
+          "id": "1.1",
+          "description": "Carefully read the program policy/scope on platforms like HackerOne, Bugcrowd, Synack, etc.",
+          "completed": false
+        },
+        {
+          "id": "1.2",
+          "description": "Highlight in-scope assets, allowed techniques, and reward structure.",
+          "completed": false
+        },
+        {
+          "id": "1.3",
+          "description": "Check for forbidden tools/attacks (e.g., no DoS, no automation on login).",
+          "completed": false
+        },
+        {
+          "id": "1.4",
+          "description": "Create a private dashboard or repo to track your progress per target.",
+          "completed": false
+        },
+        {
+          "id": "1.5",
+          "description": "Add the program to a bug bounty tracker (e.g., BugBoard, Notion, Obsidian).",
+          "completed": false
+        },
+        {
+          "id": "1.6",
+          "description": "Set up your bug bounty environment: Kali Linux / Parrot / Ubuntu VM or host setup.",
+          "completed": false
+        },
+        {
+          "id": "1.7",
+          "description": "Set up Burp Suite with useful extensions.",
+          "completed": false
+        },
+        {
+          "id": "1.8",
+          "description": "Set up browser extensions (Hack-Tools, Wappalyzer, Cookie-Editor, etc.).",
+          "completed": false
+        },
+        {
+          "id": "1.9",
+          "description": "Prepare bug report templates (Markdown) for XSS, IDOR, CSRF, SSRF, Open Redirect.",
+          "completed": false
+        },
+        {
+          "id": "1.10",
+          "description": "Keep a vulnerability cheat sheet handy (OWASP Top 10, PortSwigger, PayloadAllTheThings).",
+          "completed": false
+        },
+        {
+          "id": "1.11",
+          "description": "Sync your scripts and tools (git pull/update) before you start.",
+          "completed": false
+        },
+        {
+          "id": "1.12",
+          "description": "Decide goal per session (e.g., find subdomains, test auth, review JS).",
+          "completed": false
+        },
+        {
+          "id": "1.13",
+          "description": "Follow target’s official pages (LinkedIn, blog, Twitter) for updates.",
+          "completed": false
+        },
+        {
+          "id": "1.14",
+          "description": "Research company’s tech stack from job postings, blog posts, GitHub.",
+          "completed": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Reconnaissance",
+      "icon": "🌐",
+      "description": "Goal: Identify all possible assets, subdomains, IPs, technologies, and entry points related to the target.",
+      "subsections": [
+        {
+          "id": "2.1",
+          "title": "Subdomain Enumeration",
+          "tasks": [
+            { "id": "2.1.1", "description": "Passive enumeration using public sources (crt.sh, certspotter, chaos, alienvault, waybackurls).", "completed": false },
+            { "id": "2.1.2", "description": "Active brute-force using wordlists (puredns, subfinder, amass, dnsx).", "completed": false },
+            { "id": "2.1.3", "description": "Recursive brute-forcing (puredns, subdomain takeover detection).", "completed": false },
+            { "id": "2.1.4", "description": "Check for wildcard subdomains.", "completed": false },
+            { "id": "2.1.5", "description": "Resolve subdomains to IPs (dnsx, massdns).", "completed": false }
+          ]
+        },
+        {
+          "id": "2.2",
+          "title": "Domain & IP Discovery",
+          "tasks": [
+            { "id": "2.2.1", "description": "Perform ASN lookup to find IP ranges (whois, ipinfo.io).", "completed": false },
+            { "id": "2.2.2", "description": "Discover IPs using shodan, fofa, censys.", "completed": false },
+            { "id": "2.2.3", "description": "Use recon-ng or netlas.io to get IP and domain links.", "completed": false },
+            { "id": "2.2.4", "description": "Reverse DNS lookup on IPs.", "completed": false }
+          ]
+        },
+        {
+          "id": "2.3",
+          "title": "Port & Service Scanning",
+          "tasks": [
+            { "id": "2.3.1", "description": "Use nmap or naabu for common ports.", "completed": false },
+            { "id": "2.3.2", "description": "Use masscan for high-speed scans.", "completed": false },
+            { "id": "2.3.3", "description": "Service fingerprinting (nmap -sV).", "completed": false },
+            { "id": "2.3.4", "description": "Identify open services like FTP, SSH, Redis, MongoDB, etc.", "completed": false },
+            { "id": "2.3.5", "description": "Banner grabbing for web/SMTP/FTP services.", "completed": false }
+          ]
+        },
+        {
+          "id": "2.4",
+          "title": "Web Asset Screenshotting",
+          "tasks": [
+            { "id": "2.4.1", "description": "Use gowitness, aquatone, or eyewitness to capture site screenshots.", "completed": false },
+            { "id": "2.4.2", "description": "Group screenshots by domain/subdomain.", "completed": false },
+            { "id": "2.4.3", "description": "Tag technologies or note login/admin panels.", "completed": false }
+          ]
+        },
+        {
+          "id": "2.5",
+          "title": "Third-Party Enumeration",
+          "tasks": [
+            { "id": "2.5.1", "description": "Search hunter.io or emailrep.io for target emails.", "completed": false },
+            { "id": "2.5.2", "description": "Check for associated GitHub accounts or commits.", "completed": false },
+            { "id": "2.5.3", "description": "Google dork: site:github.com target.com.", "completed": false },
+            { "id": "2.5.4", "description": "Look for public S3 buckets, Google Groups, Trello boards.", "completed": false }
+          ]
+        },
+        {
+          "id": "2.6",
+          "title": "Archived URLs",
+          "tasks": [
+            { "id": "2.6.1", "description": "Use waybackurls, gau, urlscan.io, and commoncrawl.", "completed": false },
+            { "id": "2.6.2", "description": "Feed archived URLs into tools like ffuf, dirsearch.", "completed": false },
+            { "id": "2.6.3", "description": "Extract parameters from old endpoints.", "completed": false },
+            { "id": "2.6.4", "description": "Look for old APIs, endpoints, or admin panels.", "completed": false }
+          ]
+        },
+        {
+          "id": "2.7",
+          "title": "CDN/WAF Detection",
+          "tasks": [
+            { "id": "2.7.1", "description": "Check if domain is behind Cloudflare, Akamai, etc.", "completed": false },
+            { "id": "2.7.2", "description": "Use wafw00f or response header analysis.", "completed": false },
+            { "id": "2.7.3", "description": "Bypass CDN/WAF by IP (if origin IP is exposed).", "completed": false }
+          ]
+        },
+        {
+          "id": "2.8",
+          "title": "Correlation & OSINT",
+          "tasks": [
+            { "id": "2.8.1", "description": "Use uncover, shodan, fofa, or censys to find linked assets.", "completed": false },
+            { "id": "2.8.2", "description": "Reverse lookups on domains or IPs.", "completed": false },
+            { "id": "2.8.3", "description": "Discover staging/dev/test servers.", "completed": false },
+            { "id": "2.8.4", "description": "Track asset changes with git, wayback, or amass track.", "completed": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Content Discovery",
+      "icon": "🧭",
+      "description": "Explore hidden paths, parameters, and functionalities that may expose vulnerabilities or admin panels.",
+      "tasks": [
+        { "id": "3.1", "description": "Perform directory brute-force using tools like ffuf, dirsearch, or gobuster.", "completed": false },
+        { "id": "3.2", "description": "Use wordlists like SecLists (e.g. common.txt, raft-large-files.txt).", "completed": false },
+        { "id": "3.3", "description": "Discover hidden endpoints or API routes.", "completed": false },
+        { "id": "3.4", "description": "Try common admin and login paths (/admin, /cpanel, /dashboard, etc.).", "completed": false },
+        { "id": "3.5", "description": "Check for exposed backup files (.bak, .old, .zip).", "completed": false },
+        { "id": "3.6", "description": "Test for .git, .svn, .env, config.php, debug.log files.", "completed": false },
+        { "id": "3.7", "description": "Look for exposed file uploads (e.g. /uploads/, /files/).", "completed": false },
+        { "id": "3.8", "description": "Crawl the site manually or using tools like hakrawler, gospider, or katana.", "completed": false },
+        { "id": "3.9", "description": "Extract endpoints from JavaScript files using LinkFinder, JSParser, xurls.", "completed": false },
+        { "id": "3.10", "description": "Use httpx to filter live endpoints from URL lists.", "completed": false },
+        { "id": "3.11", "description": "Discover parameters using tools like arjun, ParamSpider, gf.", "completed": false },
+        { "id": "3.12", "description": "Use wordlists for parameter fuzzing (params.txt, payloadbox, etc.).", "completed": false },
+        { "id": "3.13", "description": "Look for language, debug, or test parameters (?lang=, ?debug=1, ?test=1).", "completed": false },
+        { "id": "3.14", "description": "Find and test robots.txt and sitemap.xml for hidden paths.", "completed": false },
+        { "id": "3.15", "description": "Check for misconfigured CDN or static resources from dev environments.", "completed": false },
+        { "id": "3.16", "description": "Look for .well-known directories (Apple App Site Association, security.txt).", "completed": false },
+        { "id": "3.17", "description": "Analyze 403/401 responses — try bypassing with path tricks (%2e, ..;, //).", "completed": false },
+        { "id": "3.18", "description": "Use HTTP verb tampering (OPTIONS, PUT, etc. — only if in scope).", "completed": false },
+        { "id": "3.19", "description": "Look for page comments or HTML code hints to hidden areas.", "completed": false },
+        { "id": "3.20", "description": "Check file extensions (.php, .html, .aspx, .jsp, .action, .rb, .cgi).", "completed": false }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Technology Detection & Fingerprinting",
+      "icon": "🧬",
+      "description": "Goal: Identify technologies, services, and software used by the target to detect potential vulnerabilities.",
+      "tasks": [
+        { "id": "4.1", "description": "Web Server Detection: Use tools like WhatWeb, httprobe, httpx, or Wappalyzer to detect the web server (e.g., Apache, Nginx, IIS, etc.).", "completed": false },
+        { "id": "4.2", "description": "CMS & Framework Identification: Identify if the target is using a CMS (e.g., WordPress, Joomla, Drupal) or a framework (e.g., Laravel, Django, Flask) using tools like Wappalyzer, builtwith, or WhatWeb.", "completed": false },
+        { "id": "4.3", "description": "JavaScript Frameworks & Libraries: Detect the use of JS frameworks (React, Angular, Vue.js, etc.) and libraries (e.g., jQuery, Lodash) using Wappalyzer or WhatWeb.", "completed": false },
+        { "id": "4.4", "description": "Technology Stack Versioning: Look for outdated or vulnerable versions of technologies (e.g., PHP, Apache, Ruby on Rails). Use tools like Nuclei with specific templates or manually check version headers.", "completed": false },
+        { "id": "4.5", "description": "CDN and Hosting Providers: Detect CDN services (e.g., Cloudflare, AWS CloudFront) and hosting providers (e.g., AWS, DigitalOcean, Google Cloud) using netcraft, Wappalyzer, or manual header inspection (x-amz-cf-id, server).", "completed": false },
+        { "id": "4.6", "description": "Security Software & WAF Detection: Identify WAFs (e.g., Cloudflare WAF, AWS WAF, ModSecurity) by analyzing HTTP response headers (server, x-powered-by) or using tools like wafw00f or nuclei.", "completed": false },
+        { "id": "4.7", "description": "SSL/TLS Encryption & Version: Check for weak SSL/TLS versions, misconfigurations, or weak ciphers using testssl.sh or sslyze.", "completed": false },
+        { "id": "4.8", "description": "HTTP Headers Inspection: Review headers for specific technology hints (e.g., X-Powered-By, X-AspNet-Version, X-Drupal-Cache) using tools like httpx or Burp Suite intercepts.", "completed": false },
+        { "id": "4.9", "description": "Fingerprinting APIs and Microservices: Identify any publicly exposed APIs by looking for /api or /graphql endpoints in the web application. Use Swagger, Postman, or api-endpoint-discovery tools to enumerate.", "completed": false },
+        { "id": "4.10", "description": "Backend & Database Fingerprinting: Identify database technologies (e.g., MySQL, PostgreSQL, MongoDB) by examining error messages or database connection strings (DB_URI) visible in URLs, source code, or responses.", "completed": false },
+        { "id": "4.11", "description": "Custom or Uncommon Technologies: For custom or uncommon stacks, manually inspect unique patterns or unusual file types in responses (e.g., proprietary headers or unknown file extensions).", "completed": false },
+        { "id": "4.12", "description": "IP Geolocation & ASN Information: Determine the geographical location and ASN of the target’s IP address. Use tools like Shodan, ipinfo.io, or asnlookup.com to gather data about the infrastructure.", "completed": false },
+        { "id": "4.13", "description": "Tech Stack Overlap or Redundancies: Check for redundant or conflicting technologies (e.g., multiple JS frameworks, duplicate libraries) that could present vulnerabilities or misconfigurations.", "completed": false },
+        { "id": "4.14", "description": "Subdomain and Service Enumeration: Enumerate hidden services that may point to backend systems or admin panels (e.g., admin.<domain>, dev.<domain>, staging.<domain>), using tools like subfinder, assetfinder, amass.", "completed": false }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "JS Analysis & Endpoint Extraction",
+      "icon": "🏗️",
+      "description": "To analyze the JavaScript files of the target application, extract useful endpoints, API keys, or other security flaws, and identify potential attack vectors that might be overlooked during manual testing.",
+      "tasks": [
+        { "id": "5.1", "description": "Extract Endpoints from JavaScript Files: Look for API endpoints hardcoded in JS files. Use tools like LinkFinder. Manually review functions using fetch(), axios(), or XMLHttpRequest().", "completed": false },
+        { "id": "5.2", "description": "Look for Hardcoded Keys, Tokens, and Credentials: Search for hardcoded API keys, JWT tokens, and secret credentials. Review exposed configuration data (e.g., Firebase config). Check for encoded secrets.", "completed": false },
+        { "id": "5.3", "description": "Analyze Minified or Obfuscated JavaScript: Use tools like jsbeautifier to format minified code for easier readability. Look for suspicious patterns that could indicate endpoint URLs or API calls.", "completed": false },
+        { "id": "5.4", "description": "Find APIs or Third-Party Integrations: Identify third-party services (e.g., payment gateways, analytics). Check the security of these third-party services.", "completed": false },
+        { "id": "5.5", "description": "Look for References to Test/Staging Environments: Search for references to staging or test environments (e.g., staging.example.com) which may be less secure.", "completed": false },
+        { "id": "5.6", "description": "Examine XHR, Fetch, or WebSocket Requests: Check for JS files using XMLHttpRequest(), fetch(), or WebSocket. Inspect if user input is passed without proper sanitization (potential XSS or SSRF).", "completed": false },
+        { "id": "5.7", "description": "Inspect Embedded Frontend Logic for Security Flaws: Examine frontend JS logic that controls critical aspects (e.g., user roles, access control). Identify privilege escalation flaws.", "completed": false },
+        { "id": "5.8", "description": "Check for Secrets in API Responses or WebSocket Messages: Review WebSocket traffic or fetch() responses for unprotected sensitive information like user tokens or session IDs.", "completed": false },
+        { "id": "5.9", "description": "Look for Insecure or Misconfigured APIs: Analyze API calls made from JavaScript for proper access control. Identify exposed endpoints without proper authentication/authorization.", "completed": false },
+        { "id": "5.10", "description": "Look for Deprecated or Outdated API Versions: Search for references to outdated or deprecated API versions still in use which may contain unpatched vulnerabilities.", "completed": false },
+        { "id": "5.11", "description": "Check for Cross-Origin Resource Sharing (CORS) Misconfigurations: Review JS files for interactions with external domains. Identify endpoints vulnerable to cross-origin attacks (e.g., Access-Control-Allow-Origin: *).", "completed": false }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Discovery Phase",
+      "icon": "🧪",
+      "description": "The Vulnerability Discovery phase is crucial in identifying and exploiting security flaws in a target application. This checklist covers a broad range of potential vulnerabilities.",
+      "subsections": [
+        {
+          "id": "6.1",
+          "title": "Input Validation Issues",
+          "tasks": [
+            { "id": "6.1.1", "description": "Cross-Site Scripting (XSS): Test in input fields (script tags, event handlers, etc.).", "completed": false },
+            { "id": "6.1.2", "description": "SQL Injection (SQLi): Test by injecting payloads in input fields or URL parameters.", "completed": false },
+            { "id": "6.1.3", "description": "Server-Side Template Injection (SSTI): Test for SSTI (e.g., {{7*7}}, #{7*7}).", "completed": false },
+            { "id": "6.1.4", "description": "XML External Entity Injection (XXE): Test for XXE vulnerabilities.", "completed": false },
+            { "id": "6.1.5", "description": "Command Injection: Test for system command injection vulnerabilities.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.2",
+          "title": "Header Issues",
+          "tasks": [
+            { "id": "6.2.1", "description": "Cross-Site Request Forgery (CSRF): Test for CSRF protection in forms and APIs.", "completed": false },
+            { "id": "6.2.2", "description": "CORS Misconfiguration: Check for misconfigured Access-Control-Allow-Origin headers.", "completed": false },
+            { "id": "6.2.3", "description": "Content Security Policy (CSP): Inspect missing or weak CSP headers.", "completed": false },
+            { "id": "6.2.4", "description": "Strict-Transport-Security (HSTS): Inspect HSTS configuration.", "completed": false },
+            { "id": "6.2.5", "description": "X-Content-Type-Options: Check for missing header to prevent MIME sniffing.", "completed": false },
+            { "id": "6.2.6", "description": "X-Frame-Options: Test for clickjacking vulnerabilities.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.3",
+          "title": "Cookie Issues",
+          "tasks": [
+            { "id": "6.3.1", "description": "Secure & HttpOnly Flags: Check for Secure and HttpOnly flags in cookies.", "completed": false },
+            { "id": "6.3.2", "description": "SameSite Attribute: Inspect SameSite cookie attribute for vulnerabilities.", "completed": false },
+            { "id": "6.3.3", "description": "Session Hijacking: Test for insecure cookie storage and session hijacking.", "completed": false },
+            { "id": "6.3.4", "description": "JWT Vulnerabilities: Check for insecure JWT algorithms or exposed secrets.", "completed": false },
+            { "id": "6.3.5", "description": "Cookie Manipulation: Test for session fixation or missing tokens.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.4",
+          "title": "Access Control Issues",
+          "tasks": [
+            { "id": "6.4.1", "description": "Insecure Direct Object References (IDOR): Test for unauthorized access via URL manipulation.", "completed": false },
+            { "id": "6.4.2", "description": "Broken Authentication: Test for bypassing login mechanisms.", "completed": false },
+            { "id": "6.4.3", "description": "Broken Access Control (BAC): Test for unauthorized access to restricted resources.", "completed": false },
+            { "id": "6.4.4", "description": "Privilege Escalation: Test for privilege escalation through user role manipulation.", "completed": false },
+            { "id": "6.4.5", "description": "Unnecessary Permissions: Check for overly permissive user permissions.", "completed": false },
+            { "id": "6.4.6", "description": "JWT Token Manipulation: Test for modifying JWT claims to escalate privileges.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.5",
+          "title": "Business Logic Flaws",
+          "tasks": [
+            { "id": "6.5.1", "description": "Race Conditions: Test for vulnerabilities like double-spending or multiple transaction flaws.", "completed": false },
+            { "id": "6.5.2", "description": "Stateful Logic Errors: Test for logic errors caused by user actions across sessions.", "completed": false },
+            { "id": "6.5.3", "description": "Cart/Order Manipulation: Test for manipulating shopping carts or order prices.", "completed": false },
+            { "id": "6.5.4", "description": "Coupon Bypass/Discount Manipulation: Test for bypassing discount validation.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.6",
+          "title": "File Upload Issues",
+          "tasks": [
+            { "id": "6.6.1", "description": "Insecure File Uploads: Test for uploading executable files (e.g., .php, .exe).", "completed": false },
+            { "id": "6.6.2", "description": "File Extension Validation: Check if file extensions are validated correctly.", "completed": false },
+            { "id": "6.6.3", "description": "Content-Type Validation Bypass: Test for bypassing content-type validation.", "completed": false },
+            { "id": "6.6.4", "description": "Insecure File Storage: Check for improper file storage (files accessible by unauthorized users).", "completed": false },
+            { "id": "6.6.5", "description": "Path Traversal: Test for path traversal vulnerabilities when uploading files.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.7",
+          "title": "Server-Side Request Forgery (SSRF)",
+          "tasks": [
+            { "id": "6.7.1", "description": "SSRF Vulnerabilities: Test by injecting payloads like http://localhost, file://, ftp://.", "completed": false },
+            { "id": "6.7.2", "description": "Internal Resource Access: Check if SSRF can access internal resources like metadata services (e.g., AWS, GCP).", "completed": false },
+            { "id": "6.7.3", "description": "Bypassing Filters: Test for SSRF by bypassing server-side URL filters (e.g., URL encoding).", "completed": false },
+            { "id": "6.7.4", "description": "Blind SSRF: Test for blind SSRF where responses are not visible but can still exploit internal resources.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.8",
+          "title": "Cross-Site Scripting (XSS) Details",
+          "tasks": [
+            { "id": "6.8.1", "description": "Reflected XSS: Test via query parameters, headers, or form submissions.", "completed": false },
+            { "id": "6.8.2", "description": "Stored XSS: Test in form fields, comments, or other stored data.", "completed": false },
+            { "id": "6.8.3", "description": "DOM-based XSS: Test via client-side JavaScript manipulation.", "completed": false },
+            { "id": "6.8.4", "description": "Input Sanitization: Check if input data is sanitized and output is properly escaped.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.9",
+          "title": "Rate Limiting & Abuse",
+          "tasks": [
+            { "id": "6.9.1", "description": "Rate-Limiting Issues: Test for vulnerabilities by submitting a large number of requests.", "completed": false },
+            { "id": "6.9.2", "description": "Brute Force Attacks: Test for weak protections against brute-force login, password reset, etc.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.10",
+          "title": "Session Management",
+          "tasks": [
+            { "id": "6.10.1", "description": "Session Fixation: Test by manipulating session cookies.", "completed": false },
+            { "id": "6.10.2", "description": "Session Token Leakage: Check for session tokens in URL parameters, logs, or other unsecured channels.", "completed": false },
+            { "id": "6.10.3", "description": "Session Expiration: Test for proper session expiration and re-authentication mechanisms.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.11",
+          "title": "URL Redirection / Open Redirect",
+          "tasks": [
+            { "id": "6.11.1", "description": "Open Redirect Vulnerabilities: Test where users are redirected to malicious sites.", "completed": false },
+            { "id": "6.11.2", "description": "URL Sanitization: Test for improper URL sanitization leading to unwanted redirects.", "completed": false }
+          ]
+        },
+        {
+          "id": "6.12",
+          "title": "Other Checks",
+          "tasks": [
+            { "id": "6.12.1", "description": "Cross-Site WebSocket Hijacking (CSWSH): Test if WebSocket communication can be intercepted or manipulated.", "completed": false },
+            { "id": "6.12.2", "description": "Cross-Site Script Inclusion (XSSI): Test for unauthorized data leakage due to JSONP or script inclusion.", "completed": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Automation & Tooling",
+      "icon": "🧰",
+      "description": "Let tools help you scale your efforts and automate repetitive tasks.",
+      "subsections": [
+        {
+          "id": "7.1",
+          "title": "Automate Recon Tasks",
+          "tasks": [
+            { "id": "7.1.1", "description": "Set up a script for continuous subdomain enumeration (subfinder, amass).", "completed": false },
+            { "id": "7.1.2", "description": "Automate port scanning (masscan, nmap -p-).", "completed": false },
+            { "id": "7.1.3", "description": "Create scripts for running directory brute-forcing (ffuf, dirsearch).", "completed": false },
+            { "id": "7.1.4", "description": "Automate collection of historical URLs (gau, waybackurls).", "completed": false }
+          ]
+        },
+        {
+          "id": "7.2",
+          "title": "Use Nuclei for Vulnerability Scanning",
+          "tasks": [
+            { "id": "7.2.1", "description": "Set up custom templates for vulnerabilities (nuclei -t custom_templates/).", "completed": false },
+            { "id": "7.2.2", "description": "Automate regular scans for CVEs and known vulnerabilities.", "completed": false },
+            { "id": "7.2.3", "description": "Schedule daily scans with cron jobs or task schedulers.", "completed": false },
+            { "id": "7.2.4", "description": "Monitor vulnerabilities in a bug bounty target using nuclei.", "completed": false }
+          ]
+        },
+        {
+          "id": "7.3",
+          "title": "Automate Burp Suite Workflows",
+          "tasks": [
+            { "id": "7.3.1", "description": "Automate repetitive tasks in Burp Suite with macros (e.g., login).", "completed": false },
+            { "id": "7.3.2", "description": "Set up automated intruder scans (payloads for XSS, SQLi, etc.).", "completed": false },
+            { "id": "7.3.3", "description": "Use Burp Suite's Extender to add custom functionality.", "completed": false },
+            { "id": "7.3.4", "description": "Schedule passive scanning for new URLs.", "completed": false }
+          ]
+        },
+        {
+          "id": "7.4",
+          "title": "Automate with Python Scripts",
+          "tasks": [
+            { "id": "7.4.1", "description": "Write Python scripts to automate exploitation of known vulnerabilities (e.g., XSS, SSRF).", "completed": false },
+            { "id": "7.4.2", "description": "Automate vulnerability chaining with scripts (e.g., exploiting XSS and CSRF together).", "completed": false },
+            { "id": "7.4.3", "description": "Create a script that scans multiple targets for common issues (e.g., missing headers, misconfigured CORS).", "completed": false }
+          ]
+        },
+        {
+          "id": "7.5",
+          "title": "Monitoring & Alerting",
+          "tasks": [
+            { "id": "7.5.1", "description": "Set up automated alerts for changes on your target’s infrastructure (using shodan, censys, fofa).", "completed": false },
+            { "id": "7.5.2", "description": "Automate email notifications for new vulnerabilities or new assets discovered.", "completed": false },
+            { "id": "7.5.3", "description": "Use cron or task schedulers to trigger re-scanning of targets weekly/monthly.", "completed": false }
+          ]
+        },
+        {
+          "id": "7.6",
+          "title": "Cloud Asset Discovery & Monitoring",
+          "tasks": [
+            { "id": "7.6.1", "description": "Automate AWS S3 bucket discovery using tools like bucket-finder, s3scanner.", "completed": false },
+            { "id": "7.6.2", "description": "Automate scanning of public cloud resources using cloud-nuke, gcp-scanner, or subjack.", "completed": false },
+            { "id": "7.6.3", "description": "Monitor public cloud misconfigurations regularly with automated tools.", "completed": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Authentication & Session Handling",
+      "icon": "🔒",
+      "description": "Ensure that authentication mechanisms and session management are secure and properly implemented.",
+      "subsections": [
+        {
+          "id": "8.1",
+          "title": "Weak or Default Credentials",
+          "tasks": [
+            { "id": "8.1.1", "description": "Attempt brute force attacks (only if allowed by the program's rules).", "completed": false },
+            { "id": "8.1.2", "description": "Test for default usernames and passwords (admin/admin, root/root).", "completed": false },
+            { "id": "8.1.3", "description": "Try commonly used password combinations.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.2",
+          "title": "Authentication Bypass",
+          "tasks": [
+            { "id": "8.2.1", "description": "Look for flaws in login mechanisms (e.g., not properly validating credentials).", "completed": false },
+            { "id": "8.2.2", "description": "Attempt SQL injection on login fields to bypass authentication.", "completed": false },
+            { "id": "8.2.3", "description": "Check for predictable session IDs or URL parameters that can be tampered with.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.3",
+          "title": "Broken Session Management",
+          "tasks": [
+            { "id": "8.3.1", "description": "Session Fixation: Try fixing the session ID via URL or cookie to hijack the session.", "completed": false },
+            { "id": "8.3.2", "description": "Session Expiry: Test if sessions expire after a reasonable time of inactivity.", "completed": false },
+            { "id": "8.3.3", "description": "Session Reuse: Check if a session ID is reused after logout or if a new one is generated.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.4",
+          "title": "JWT and Token Handling",
+          "tasks": [
+            { "id": "8.4.1", "description": "Token Information Disclosure: Inspect JWTs for sensitive information in the payload.", "completed": false },
+            { "id": "8.4.2", "description": "Token Expiry: Verify if JWT or session tokens expire correctly.", "completed": false },
+            { "id": "8.4.3", "description": "Token Bypass: Try altering the token or its payload to gain unauthorized access.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.5",
+          "title": "Multi-Factor Authentication (MFA) Flaws",
+          "tasks": [
+            { "id": "8.5.1", "description": "Check if MFA is required for all sensitive actions.", "completed": false },
+            { "id": "8.5.2", "description": "Test for potential vulnerabilities in the MFA mechanism (e.g., bypassing with social engineering, race conditions).", "completed": false }
+          ]
+        },
+        {
+          "id": "8.6",
+          "title": "Insecure Logout Mechanisms",
+          "tasks": [
+            { "id": "8.6.1", "description": "Session Persistence After Logout: Check if the session persists after logging out.", "completed": false },
+            { "id": "8.6.2", "description": "Logout Bypass: Attempt to trick the server into thinking the user is logged out while maintaining the session.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.7",
+          "title": "Password Reset Weaknesses",
+          "tasks": [
+            { "id": "8.7.1", "description": "Test the password reset flow for vulnerabilities (e.g., predictable reset token).", "completed": false },
+            { "id": "8.7.2", "description": "Check if reset tokens can be guessed or reused.", "completed": false },
+            { "id": "8.7.3", "description": "Test if the reset process sends sensitive data over unencrypted channels.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.8",
+          "title": "Insecure Cookie Flags",
+          "tasks": [
+            { "id": "8.8.1", "description": "Secure Flag: Test if cookies are set with the Secure flag.", "completed": false },
+            { "id": "8.8.2", "description": "HttpOnly Flag: Check if cookies are set with the HttpOnly flag.", "completed": false },
+            { "id": "8.8.3", "description": "SameSite Attribute: Check if cookies use the SameSite attribute.", "completed": false }
+          ]
+        },
+        {
+          "id": "8.9",
+          "title": "Account Enumeration",
+          "tasks": [
+            { "id": "8.9.1", "description": "Test if the application reveals account existence based on response message or timing.", "completed": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "API & Mobile Testing",
+      "icon": "🔌",
+      "description": "APIs and mobile applications are often the most critical attack surface for modern web applications.",
+      "subsections": [
+        {
+          "id": "9.1",
+          "title": "API Testing",
+          "tasks": [
+            { "id": "9.1.1", "description": "Test for Insecure API Endpoints: Ensure no open/sensitive endpoints like /admin, /debug, /test.", "completed": false },
+            { "id": "9.1.2", "description": "Authorization Bypass (BOLA/BFLA): Test by attempting to access unauthorized resources using different user IDs or roles.", "completed": false },
+            { "id": "9.1.3", "description": "JWT Security: Test for insecure algorithms, sensitive data leakage, or session fixation.", "completed": false },
+            { "id": "9.1.4", "description": "Rate Limiting & Abuse: Ensure APIs have proper rate limiting to prevent brute-force attacks.", "completed": false },
+            { "id": "9.1.5", "description": "Fuzzing API Inputs: Use fuzzing tools to send malformed data or large payloads.", "completed": false },
+            { "id": "9.1.6", "description": "Insecure Endpoints (GraphQL, SOAP): Test GraphQL for introspection/schema leaks and SOAP for excessive info disclosure.", "completed": false },
+            { "id": "9.1.7", "description": "Sensitive Data Exposure: Check for sensitive data (passwords, tokens) exposed in API responses.", "completed": false },
+            { "id": "9.1.8", "description": "Improper API Authentication: Test for token issues or unauthenticated access to protected resources.", "completed": false },
+            { "id": "9.1.9", "description": "CORS Misconfigurations: Test for open CORS headers allowing access from untrusted sources.", "completed": false },
+            { "id": "9.1.10", "description": "API Errors & Information Disclosure: Look for error messages that reveal stack traces or other sensitive info.", "completed": false }
+          ]
+        },
+        {
+          "id": "9.2",
+          "title": "Mobile Testing",
+          "tasks": [
+            { "id": "9.2.1", "description": "API Communication: Inspect API calls made by the mobile app (mitmproxy, burp) for security issues.", "completed": false },
+            { "id": "9.2.2", "description": "Insecure Data Storage: Check for sensitive data stored insecurely on the device (unencrypted databases, plaintext storage).", "completed": false },
+            { "id": "9.2.3", "description": "Mobile App Reverse Engineering: Reverse engineer the APK/IPA to look for hardcoded secrets or vulnerabilities.", "completed": false },
+            { "id": "9.2.4", "description": "Insecure App-to-App Communication: Check for insecure communication, potentially allowing data leaks (e.g., intent hijacking).", "completed": false },
+            { "id": "9.2.5", "description": "Mobile WebView Security: Test for insecure WebView implementations that might allow malicious JavaScript injection.", "completed": false },
+            { "id": "9.2.6", "description": "App Permissions: Review app permissions to ensure only necessary ones are requested.", "completed": false },
+            { "id": "9.2.7", "description": "Token & Key Management: Inspect how tokens or API keys are managed; ensure they are not hardcoded or exposed.", "completed": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Exploitation & Proof of Concept",
+      "icon": "📤",
+      "description": "Demonstrate the working vulnerability in a clear, reproducible way, showing both the impact and the exploitability of the issue.",
+      "tasks": [
+        { "id": "10.1", "description": "Record a working Proof of Concept (PoC) video showing the exploit.", "completed": false },
+        { "id": "10.2", "description": "Save raw HTTP requests/responses relevant to the PoC.", "completed": false },
+        { "id": "10.3", "description": "Write a reproducible PoC script (curl, Python, etc.).", "completed": false },
+        { "id": "10.4", "description": "Save the full proxy history from Burp Suite or other tools.", "completed": false },
+        { "id": "10.5", "description": "Verify PoC impact across different devices, browsers, and network conditions.", "completed": false },
+        { "id": "10.6", "description": "Chain multiple vulnerabilities if applicable to demonstrate escalated impact.", "completed": false },
+        { "id": "10.7", "description": "Ensure clean reproduction of PoC in a fresh environment.", "completed": false },
+        { "id": "10.8", "description": "Include debugging information, logs, or error messages.", "completed": false },
+        { "id": "10.9", "description": "Use specific payloads to clearly demonstrate the issue.", "completed": false },
+        { "id": "10.10", "description": "Check for and demonstrate bypass methods for mitigations (e.g., WAF).", "completed": false },
+        { "id": "10.11", "description": "Document the expected outcome and real-world impact clearly.", "completed": false },
+        { "id": "10.12", "description": "Prepare all PoC materials and notes for the final report.", "completed": false }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Reporting",
+      "icon": "🧾",
+      "description": "The way you report bugs can make or break your submission—even for critical issues.",
+      "tasks": [
+        { "id": "11.1", "description": "Write a clear and professional summary of the issue.", "completed": false },
+        { "id": "11.2", "description": "Include detailed and reproducible steps (step-by-step).", "completed": false },
+        { "id": "11.3", "description": "Clearly explain the vulnerability type (e.g. XSS, IDOR, SSRF).", "completed": false },
+        { "id": "11.4", "description": "Add actual vs expected behavior.", "completed": false },
+        { "id": "11.5", "description": "Highlight the impact (e.g., account takeover, data exposure).", "completed": false },
+        { "id": "11.6", "description": "Mention CWE/CVSS Score (optional but professional).", "completed": false },
+        { "id": "11.7", "description": "Attach screenshots and/or video PoC.", "completed": false },
+        { "id": "11.8", "description": "Provide raw request/response (Burp Suite copy or curl).", "completed": false },
+        { "id": "11.9", "description": "Include PoC script if applicable.", "completed": false },
+        { "id": "11.10", "description": "Suggest remediation steps or fix ideas.", "completed": false },
+        { "id": "11.11", "description": "Use the program’s preferred format/template.", "completed": false },
+        { "id": "11.12", "description": "Double-check grammar and formatting before submitting.", "completed": false },
+        { "id": "11.13", "description": "Respect rate limits and responsible disclosure policy.", "completed": false },
+        { "id": "11.14", "description": "Keep the report concise and avoid unnecessary filler.", "completed": false },
+        { "id": "11.15", "description": "Add testing environment and browser version if relevant.", "completed": false },
+        { "id": "11.16", "description": "Double-check if the bug is in-scope before reporting.", "completed": false },
+        { "id": "11.17", "description": "Submit only one vulnerability per report (unless allowed).", "completed": false }
+      ]
+    }
+  ]
+}

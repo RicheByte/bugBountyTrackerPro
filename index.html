@@ -1,81 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About | Hacker Notes</title>
-  <style>
-    /* Base Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #0d1117;
-      color: #c9d1d9;
-      line-height: 1.6;
-      padding: 2rem;
-    }
-
-    a {
-      color: #58a6ff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .section-title {
-      font-size: 2rem;
-      color: #79c0ff;
-      margin-bottom: 1rem;
-    }
-
-    .about-container {
-      background-color: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
-    }
-
-    .about-text p {
-      margin-bottom: 1rem;
-    }
-
-    .about-text strong {
-      color: #ffa657;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 1rem;
-      }
-
-      .section-title {
-        font-size: 1.5rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🐛 Bug Bounty Tracker</h1>
+            <div class="header-actions">
+                <button id="newProject" class="btn btn-primary">New Project</button>
+                <button id="saveProject" class="btn btn-secondary">Save Project</button>
+                <button id="loadProject" class="btn btn-secondary">Load Project</button>
+                <button id="exportPdf" class="btn btn-success">Export PDF</button>
+            </div>
+        </header>
 
-  <section id="about">
-    <h2 class="section-title">> About_HackerNotes</h2>
-    <div class="about-container">
-      <div class="about-text">
-        <p><strong>HACKER NOTES</strong> (<a href="https://hacker.super.site/" target="_blank">hacker.super.site</a>) is a curated terminal-themed blog by <strong>RicheByte</strong>, designed for IT enthusiasts and cybersecurity learners. Whether you're diving into Linux, exploring networking protocols, or sharpening your ethical hacking skills—this site serves as your command-line companion.</p>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar - Project List -->
+            <div class="sidebar">
+                <div class="project-form">
+                    <input type="text" id="projectName" placeholder="Project Name" class="form-input">
+                    <input type="text" id="projectUrl" placeholder="Target URL" class="form-input">
+                    <select id="projectScope" class="form-input">
+                        <option value="web">Web Application</option>
+                        <option value="mobile">Mobile Application</option>
+                        <option value="api">API</option>
+                        <option value="network">Network</option>
+                    </select>
+                    <button id="createProject" class="btn btn-primary">Create Project</button>
+                </div>
+                <div class="projects-list" id="projectsList">
+                    <!-- Projects will be listed here -->
+                </div>
+            </div>
 
-        <p>It goes beyond tutorials—it’s a minimalist space for anyone passionate about the digital frontier. Stay sharp with writeups, quick cheatsheets, and notes grounded in real-world cybersecurity learning.</p>
+            <!-- Canvas Area -->
+            <div class="canvas-area">
+                <div class="canvas-header">
+                    <h2 id="currentProjectName">No Project Selected</h2>
+                    <div class="canvas-controls">
+                        <button id="toggleView" class="btn btn-outline">Toggle View</button>
+                        <button id="expandAll" class="btn btn-outline">Expand All</button>
+                        <button id="collapseAll" class="btn btn-outline">Collapse All</button>
+                    </div>
+                </div>
+                
+                <div class="canvas-container" id="canvasContainer">
+                    <!-- Checklist tree will be rendered here -->
+                </div>
+            </div>
 
-        <p><strong>Why?</strong> Because the best hackers never stop learning.</p>
-      </div>
+            <!-- Notes Panel -->
+            <div class="notes-panel" id="notesPanel">
+                <div class="notes-header">
+                    <h3>Notes</h3>
+                    <button id="closeNotes" class="btn btn-outline">×</button>
+                </div>
+                <div class="notes-content">
+                    <textarea id="notesEditor" placeholder="Add your notes here..."></textarea>
+                    <div class="notes-actions">
+                        <button id="saveNote" class="btn btn-primary">Save Note</button>
+                        <button id="clearNote" class="btn btn-outline">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for project details -->
+        <div id="projectModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Project Details</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="projectDetails">
+                        <!-- Project details will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
 
+    <script src="renderer.js"></script>
 </body>
 </html>
