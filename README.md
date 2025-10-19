@@ -8,45 +8,45 @@ A comprehensive Electron.js application for bug bounty hunters to manage project
 ![Electron](https://img.shields.io/badge/Electron-22.0.0-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## ✨ Features
+##  Features
 
-### 🎯 Project Management
+###  Project Management
 - Create and manage multiple bug bounty projects
 - Organize by scope (Web, Mobile, API, Network)
 - Save and load project sessions
 - Project templates and quick starters
 
-### 📊 Advanced Dashboards
+###  Advanced Dashboards
 - **Progress Overview**: Visual progress tracking across all projects
 - **Statistics Dashboard**: Completion rates, time tracking, and metrics
 - **Priority Matrix**: Eisenhower matrix for task prioritization
 - **Timeline View**: Project timeline with milestones
 
-### 📈 Visualizations
+###  Visualizations
 - Progress charts and completion graphs
 - Burndown charts for sprint tracking
 - Priority matrices and heat maps
 - Interactive progress wheels
 
-### ✅ Smart Checklists
+###  Smart Checklists
 - Comprehensive bug bounty methodology checklists
 - Customizable task templates
 - Nested sections and subsections
 - Smart progress calculation
 
-### 📝 Note-Taking System
+###  Note-Taking System
 - Rich text notes for findings
 - Attach evidence and screenshots
 - Markdown support
 - Organized note hierarchy
 
-### 📤 Export Capabilities
+###  Export Capabilities
 - PDF reports with professional formatting
 - JSON data export/import
 - CSV export for data analysis
 - Executive summary reports
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -234,6 +234,6 @@ Having trouble?
 
 ---
 
-**Happy Hunting!** 🎯
+**Happy Hunting!** 
 
 Remember: Always test responsibly and follow program rules and guidelines.
