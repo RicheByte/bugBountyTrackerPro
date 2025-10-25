@@ -1,0 +1,395 @@
+/* ==========================================================================
+   Writeups Feature Styles
+   ========================================================================== */
+
+/* Writeups Container Layout */
+.writeups-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Writeups Sidebar */
+.writeups-sidebar {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.writeups-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.writeups-header h3 {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.writeups-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Writeup Cards */
+.writeup-card {
+    background: var(--bg-primary);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--accent);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.writeup-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.writeup-card.active {
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow);
+}
+
+.writeup-card.critical {
+    border-left-color: #dc2626;
+}
+
+.writeup-card.high {
+    border-left-color: #ea580c;
+}
+
+.writeup-card.medium {
+    border-left-color: #f59e0b;
+}
+
+.writeup-card.low {
+    border-left-color: #84cc16;
+}
+
+.writeup-card.info {
+    border-left-color: #0ea5e9;
+}
+
+.writeup-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.writeup-card-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Writeup Content Area */
+.writeups-content {
+    background: var(--bg-primary);
+    overflow-y: auto;
+}
+
+/* Writeup Editor */
+.writeup-editor {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.writeup-header {
+    margin-bottom: 1.5rem;
+}
+
+.writeup-title-input {
+    width: 100%;
+    font-size: 1.75rem;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.writeup-title-input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent);
+}
+
+.writeup-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Severity Badges */
+.severity-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.severity-critical,
+.severity-badge.severity-critical {
+    background: #dc2626;
+    color: white;
+}
+
+.severity-high,
+.severity-badge.severity-high {
+    background: #ea580c;
+    color: white;
+}
+
+.severity-medium,
+.severity-badge.severity-medium {
+    background: #f59e0b;
+    color: white;
+}
+
+.severity-low,
+.severity-badge.severity-low {
+    background: #84cc16;
+    color: white;
+}
+
+.severity-info,
+.severity-badge.severity-info {
+    background: #0ea5e9;
+    color: white;
+}
+
+.cvss-score {
+    padding: 0.25rem 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Writeup Toolbar */
+.writeup-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+/* Editor Sections */
+.writeup-content-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.editor-section {
+    margin-bottom: 1.5rem;
+}
+
+.editor-section label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.editor-section textarea,
+.editor-section input[type="text"] {
+    width: 100%;
+}
+
+.code-editor {
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    background: var(--bg-tertiary);
+}
+
+/* Steps */
+.step-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.step-number {
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 1.5rem;
+}
+
+.step-input {
+    flex: 1;
+}
+
+.remove-step-btn,
+.remove-reference-btn {
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: all var(--transition-speed);
+}
+
+.remove-step-btn:hover,
+.remove-reference-btn:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: white;
+}
+
+/* References */
+.reference-item {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.reference-input {
+    flex: 1;
+}
+
+/* CVSS Calculator */
+.cvss-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.cvss-calculator {
+    max-width: 800px;
+}
+
+.cvss-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.cvss-header h4 {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.cvss-score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.score-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.score-severity {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cvss-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.metric-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.metric-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.metric-btn {
+    padding: 0.5rem 1rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all var(--transition-speed);
+}
+
+.metric-btn:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--text-secondary);
+}
+
+.metric-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.cvss-vector {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.cvss-vector label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.cvss-vector input {
+    flex: 1;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .writeups-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .writeups-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+        max-height: 40vh;
+    }
+}

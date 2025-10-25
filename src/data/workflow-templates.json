@@ -1,0 +1,589 @@
+{
+  "workflows": [
+    {
+      "id": "web-recon-workflow",
+      "name": "Complete Web Application Reconnaissance",
+      "description": "Comprehensive reconnaissance workflow for web applications covering subdomain enumeration, port scanning, technology detection, and content discovery.",
+      "category": "reconnaissance",
+      "estimatedTime": "2-4 hours",
+      "difficulty": "beginner",
+      "steps": [
+        {
+          "id": 1,
+          "title": "Subdomain Enumeration",
+          "type": "command",
+          "command": "subfinder -d {domain} -o subdomains.txt && assetfinder --subs-only {domain} >> subdomains.txt",
+          "description": "Discover all subdomains using multiple tools for comprehensive coverage",
+          "tools": ["subfinder", "assetfinder", "amass"],
+          "estimatedTime": "10-30 mins",
+          "completed": false,
+          "notes": "Run multiple tools and combine results. Consider using:\n- subfinder (fast)\n- amass (comprehensive)\n- assetfinder (quick)\n- crt.sh for certificate transparency logs"
+        },
+        {
+          "id": 2,
+          "title": "Live Host Discovery",
+          "type": "command",
+          "command": "cat subdomains.txt | httpx -silent -status-code -title -tech-detect -o live-hosts.txt",
+          "description": "Identify which subdomains are live and responsive",
+          "tools": ["httpx", "httprobe"],
+          "estimatedTime": "5-15 mins",
+          "completed": false,
+          "notes": "Filter out dead hosts to focus testing efforts. Save full output for technology fingerprinting."
+        },
+        {
+          "id": 3,
+          "title": "Port Scanning",
+          "type": "command",
+          "command": "nmap -iL live-hosts.txt -p- -T4 -oA nmap-full-scan",
+          "description": "Comprehensive port scan to identify all open services",
+          "tools": ["nmap", "masscan", "rustscan"],
+          "estimatedTime": "30-120 mins",
+          "completed": false,
+          "notes": "Start with common ports (-F flag) for quick wins, then run full scan (-p-) in background. Consider:\n- Top 1000 ports first\n- Service version detection (-sV)\n- OS detection (-O) if needed"
+        },
+        {
+          "id": 4,
+          "title": "Technology Stack Identification",
+          "type": "manual",
+          "description": "Identify frameworks, CMS, web servers, and technologies in use",
+          "tools": ["Wappalyzer", "BuiltWith", "whatweb", "httpx"],
+          "estimatedTime": "15-30 mins",
+          "completed": false,
+          "checklist": [
+            "Run whatweb on all live hosts",
+            "Use browser extension for manual verification",
+            "Check HTTP headers for server info",
+            "Identify JavaScript frameworks",
+            "Note CMS versions (WordPress, Joomla, etc.)",
+            "Document web server type and version"
+          ],
+          "notes": "Look for outdated versions with known vulnerabilities. Check CVE databases for identified versions."
+        },
+        {
+          "id": 5,
+          "title": "Content Discovery - Directories",
+          "type": "command",
+          "command": "ffuf -u https://{target}/FUZZ -w /path/to/wordlist.txt -mc 200,301,302,403 -o directories.json",
+          "description": "Discover hidden directories and endpoints",
+          "tools": ["ffuf", "gobuster", "dirsearch", "feroxbuster"],
+          "estimatedTime": "20-60 mins",
+          "completed": false,
+          "notes": "Use multiple wordlists:\n- common.txt for quick scan\n- raft-large.txt for thorough\n- Technology-specific lists (PHP, ASP, etc.)\nFocus on interesting status codes: 200, 301, 302, 401, 403"
+        },
+        {
+          "id": 6,
+          "title": "Content Discovery - Files",
+          "type": "command",
+          "command": "ffuf -u https://{target}/FUZZ -w files.txt -e .php,.html,.js,.txt,.json,.xml,.bak,.old",
+          "description": "Search for sensitive files and backups",
+          "tools": ["ffuf", "gobuster"],
+          "estimatedTime": "15-30 mins",
+          "completed": false,
+          "notes": "Look for:\n- Backup files (.bak, .old, .backup)\n- Config files (config.php, web.config)\n- Source code (.php~, .swp)\n- Documentation\n- Git files (.git/config)"
+        },
+        {
+          "id": 7,
+          "title": "JavaScript Analysis",
+          "type": "manual",
+          "description": "Extract endpoints, API keys, and secrets from JavaScript files",
+          "tools": ["LinkFinder", "JSParser", "getJS", "SecretFinder"],
+          "estimatedTime": "30-90 mins",
+          "completed": false,
+          "checklist": [
+            "Download all JS files from target",
+            "Run LinkFinder to extract endpoints",
+            "Run SecretFinder for API keys and tokens",
+            "Manually review main application JS files",
+            "Check for hardcoded credentials",
+            "Identify API endpoints",
+            "Look for commented-out code with sensitive info",
+            "Extract and test discovered endpoints"
+          ],
+          "notes": "JS files often contain:\n- Undocumented API endpoints\n- API keys (AWS, Google, etc.)\n- Internal URLs\n- Authentication logic\n- Business logic flaws"
+        },
+        {
+          "id": 8,
+          "title": "Screenshot All Hosts",
+          "type": "command",
+          "command": "cat live-hosts.txt | aquatone -out screenshots",
+          "description": "Visual reconnaissance of all discovered hosts",
+          "tools": ["aquatone", "eyewitness", "gowitness"],
+          "estimatedTime": "10-20 mins",
+          "completed": false,
+          "notes": "Screenshots help identify:\n- Interesting applications\n- Admin panels\n- Login pages\n- Error pages with info disclosure\n- Development/staging environments"
+        },
+        {
+          "id": 9,
+          "title": "Parameter Discovery",
+          "type": "command",
+          "command": "arjun -u https://{target} -oJ params.json",
+          "description": "Discover hidden parameters in endpoints",
+          "tools": ["Arjun", "ParamSpider", "x8"],
+          "estimatedTime": "20-40 mins",
+          "completed": false,
+          "notes": "Hidden parameters can lead to:\n- IDOR vulnerabilities\n- Debug modes\n- Admin functionality\n- SQL injection points"
+        },
+        {
+          "id": 10,
+          "title": "Wayback Machine Analysis",
+          "type": "manual",
+          "description": "Analyze historical snapshots for old endpoints and files",
+          "tools": ["waybackurls", "gau", "web.archive.org"],
+          "estimatedTime": "15-30 mins",
+          "completed": false,
+          "checklist": [
+            "Run waybackurls on domain",
+            "Filter for interesting file extensions",
+            "Look for old API versions",
+            "Check for exposed admin panels",
+            "Find old subdomains",
+            "Identify deprecated endpoints still active"
+          ],
+          "notes": "Old versions might have unfixed vulnerabilities or expose sensitive information."
+        },
+        {
+          "id": 11,
+          "title": "Google Dorking",
+          "type": "manual",
+          "description": "Use Google search operators to find exposed information",
+          "tools": ["Google", "GHDB"],
+          "estimatedTime": "20-30 mins",
+          "completed": false,
+          "checklist": [
+            "site:{domain} filetype:pdf (documents)",
+            "site:{domain} ext:php inurl:admin (admin panels)",
+            "site:{domain} inurl:login",
+            "site:{domain} intitle:index.of (directory listing)",
+            "site:{domain} ext:sql | ext:bak (backups)",
+            "site:{domain} inurl:api (API endpoints)",
+            "Check GHDB for domain-specific dorks"
+          ],
+          "notes": "Review Google Hacking Database for advanced queries"
+        },
+        {
+          "id": 12,
+          "title": "GitHub Reconnaissance",
+          "type": "manual",
+          "description": "Search for exposed credentials and sensitive data in GitHub",
+          "tools": ["truffleHog", "GitDorker", "github-search"],
+          "estimatedTime": "30-45 mins",
+          "completed": false,
+          "checklist": [
+            "Search for organization repositories",
+            "Look for hardcoded API keys",
+            "Find database credentials",
+            "Check commit history for secrets",
+            "Review issues and pull requests",
+            "Search code for domain mentions",
+            "Look for config files"
+          ],
+          "notes": "Common findings:\n- AWS keys\n- Database credentials\n- API tokens\n- Private keys\n- Internal URLs"
+        }
+      ]
+    },
+    {
+      "id": "api-testing-workflow",
+      "name": "API Security Testing Workflow",
+      "description": "Systematic approach to testing REST and GraphQL APIs for common vulnerabilities",
+      "category": "testing",
+      "estimatedTime": "3-6 hours",
+      "difficulty": "intermediate",
+      "steps": [
+        {
+          "id": 1,
+          "title": "API Discovery & Documentation",
+          "type": "manual",
+          "description": "Identify and document all API endpoints and their functionality",
+          "tools": ["Burp Suite", "Postman", "Swagger UI"],
+          "estimatedTime": "30-60 mins",
+          "completed": false,
+          "checklist": [
+            "Check for API documentation (/docs, /swagger, /api-docs)",
+            "Analyze JavaScript for API calls",
+            "Intercept application traffic",
+            "Map all API endpoints",
+            "Document request/response formats",
+            "Identify authentication mechanisms",
+            "Note API versioning (v1, v2, etc.)"
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Authentication Testing",
+          "type": "manual",
+          "description": "Test authentication implementation for weaknesses",
+          "tools": ["Burp Suite", "jwt.io", "JWT_Tool"],
+          "estimatedTime": "45-90 mins",
+          "completed": false,
+          "checklist": [
+            "Test for broken authentication",
+            "JWT token analysis (if applicable)",
+            "Test token expiration",
+            "Check for token reuse after logout",
+            "Test password reset functionality",
+            "Brute force protection testing",
+            "Test for default credentials",
+            "OAuth implementation review",
+            "API key security testing"
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Authorization Testing - BOLA/IDOR",
+          "type": "manual",
+          "description": "Test for Broken Object Level Authorization vulnerabilities",
+          "tools": ["Burp Suite", "Autorize extension"],
+          "estimatedTime": "60-120 mins",
+          "completed": false,
+          "checklist": [
+            "Identify all resource IDs in requests",
+            "Create two test accounts (User A and User B)",
+            "Access User A's resources",
+            "Try to access User B's resources with User A's token",
+            "Test CRUD operations on other users' objects",
+            "Test horizontal privilege escalation",
+            "Test vertical privilege escalation",
+            "Check admin endpoints with regular user"
+          ],
+          "notes": "BOLA is #1 in OWASP API Top 10. Test every endpoint that uses IDs."
+        },
+        {
+          "id": 4,
+          "title": "Mass Assignment Testing",
+          "type": "manual",
+          "description": "Test for mass assignment vulnerabilities",
+          "tools": ["Burp Suite", "Postman"],
+          "estimatedTime": "30-60 mins",
+          "completed": false,
+          "checklist": [
+            "Identify object properties in responses",
+            "Add additional parameters to requests",
+            "Try to modify read-only fields (id, created_at)",
+            "Test privilege escalation via role modification",
+            "Add 'isAdmin': true to user update",
+            "Test parameter pollution"
+          ],
+          "notes": "Try adding: role, admin, isAdmin, privilege, verified, confirmed, etc."
+        },
+        {
+          "id": 5,
+          "title": "Excessive Data Exposure",
+          "type": "manual",
+          "description": "Check if API returns more data than necessary",
+          "tools": ["Burp Suite", "Manual Review"],
+          "estimatedTime": "20-40 mins",
+          "completed": false,
+          "checklist": [
+            "Review all API responses",
+            "Check for sensitive data in responses",
+            "Look for PII exposure",
+            "Check if passwords/hashes are returned",
+            "Verify filtering is server-side",
+            "Test if private fields are exposed",
+            "Compare mobile vs web API responses"
+          ]
+        },
+        {
+          "id": 6,
+          "title": "Rate Limiting & Resource Testing",
+          "type": "manual",
+          "description": "Test for lack of rate limiting and resource exhaustion",
+          "tools": ["Burp Intruder", "ffuf", "custom scripts"],
+          "estimatedTime": "30-45 mins",
+          "completed": false,
+          "checklist": [
+            "Test login endpoint for rate limiting",
+            "Test password reset for abuse",
+            "Test API endpoints for DoS potential",
+            "Check for resource exhaustion",
+            "Test pagination limits",
+            "Test file upload size limits",
+            "Check for CAPTCHA bypass"
+          ]
+        },
+        {
+          "id": 7,
+          "title": "Injection Testing",
+          "type": "manual",
+          "description": "Test for SQL injection, NoSQL injection, and command injection",
+          "tools": ["Burp Suite", "sqlmap", "NoSQLMap"],
+          "estimatedTime": "45-90 mins",
+          "completed": false,
+          "checklist": [
+            "Test all input parameters for SQLi",
+            "Test NoSQL injection (MongoDB, etc.)",
+            "Test JSON-based injection",
+            "Test XML injection",
+            "Test command injection in parameters",
+            "Test LDAP injection if applicable",
+            "Test XPath injection"
+          ]
+        },
+        {
+          "id": 8,
+          "title": "Business Logic Testing",
+          "type": "manual",
+          "description": "Test for business logic flaws specific to the API",
+          "tools": ["Burp Suite", "Postman", "Manual Testing"],
+          "estimatedTime": "60-90 mins",
+          "completed": false,
+          "checklist": [
+            "Test workflows for logic flaws",
+            "Test price manipulation in e-commerce",
+            "Test quantity manipulation",
+            "Test discount code abuse",
+            "Test refund logic",
+            "Test race conditions",
+            "Test sequence bypass (step 1, 3, 2)",
+            "Test negative values",
+            "Test account takeover flows"
+          ]
+        },
+        {
+          "id": 9,
+          "title": "GraphQL Testing (if applicable)",
+          "type": "manual",
+          "description": "Specific tests for GraphQL endpoints",
+          "tools": ["GraphQL Voyager", "Burp Suite", "graphql-playground"],
+          "estimatedTime": "45-75 mins",
+          "completed": false,
+          "checklist": [
+            "Check if introspection is enabled",
+            "Extract full schema",
+            "Test for exposed mutations",
+            "Test query depth limits",
+            "Test for circular query DoS",
+            "Test field duplication attacks",
+            "Test authorization on each field",
+            "Test for IDOR in GraphQL queries"
+          ]
+        },
+        {
+          "id": 10,
+          "title": "Documentation & Reporting",
+          "type": "manual",
+          "description": "Document findings and create detailed reports",
+          "tools": ["Note-taking app", "Screenshot tool"],
+          "estimatedTime": "30-60 mins",
+          "completed": false,
+          "checklist": [
+            "Document all vulnerabilities found",
+            "Create PoC for each finding",
+            "Rate severity (Critical, High, Medium, Low)",
+            "Take screenshots/videos",
+            "Write clear reproduction steps",
+            "Document impact",
+            "Suggest remediation",
+            "Organize findings by severity"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mobile-api-testing",
+      "name": "Mobile Application Testing",
+      "description": "Complete mobile app security assessment including static and dynamic analysis",
+      "category": "testing",
+      "estimatedTime": "4-8 hours",
+      "difficulty": "advanced",
+      "steps": [
+        {
+          "id": 1,
+          "title": "Setup Testing Environment",
+          "type": "manual",
+          "description": "Prepare tools and environment for mobile testing",
+          "tools": ["Android Studio", "Genymotion", "Frida", "Burp Suite"],
+          "estimatedTime": "30-60 mins",
+          "completed": false,
+          "checklist": [
+            "Install Android emulator or setup physical device",
+            "Root device or use rooted emulator",
+            "Install Burp Suite CA certificate",
+            "Setup proxy on device",
+            "Install Frida server",
+            "Install MobSF or similar",
+            "Prepare APK/IPA for testing"
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Static Analysis",
+          "type": "manual",
+          "description": "Analyze application without executing it",
+          "tools": ["MobSF", "jadx", "apktool", "Ghidra"],
+          "estimatedTime": "60-90 mins",
+          "completed": false,
+          "checklist": [
+            "Upload APK to MobSF for automated analysis",
+            "Decompile APK with jadx",
+            "Review AndroidManifest.xml",
+            "Check for hardcoded secrets",
+            "Analyze API endpoints in code",
+            "Check cryptographic implementations",
+            "Review exported components",
+            "Check for debug flags",
+            "Review third-party SDKs"
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Traffic Interception",
+          "type": "manual",
+          "description": "Intercept and analyze app network traffic",
+          "tools": ["Burp Suite", "mitmproxy", "Frida"],
+          "estimatedTime": "45-90 mins",
+          "completed": false,
+          "checklist": [
+            "Configure device to use proxy",
+            "Test SSL pinning bypass if needed",
+            "Use Frida for SSL pinning bypass",
+            "Capture all API requests",
+            "Analyze authentication mechanism",
+            "Check for sensitive data in transit",
+            "Test if HTTPS is enforced",
+            "Look for cleartext traffic"
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Local Storage Analysis",
+          "type": "manual",
+          "description": "Examine how app stores data locally",
+          "tools": ["adb", "SQLite browser", "Android Studio Device File Explorer"],
+          "estimatedTime": "30-60 mins",
+          "completed": false,
+          "checklist": [
+            "Extract app data using adb",
+            "Check SharedPreferences for sensitive data",
+            "Analyze SQLite databases",
+            "Check for unencrypted files",
+            "Look for cached credentials",
+            "Review SD card storage",
+            "Check for PII exposure",
+            "Test backup flags"
+          ]
+        },
+        {
+          "id": 5,
+          "title": "API Security Testing",
+          "type": "manual",
+          "description": "Test API endpoints used by mobile app",
+          "tools": ["Burp Suite", "Postman"],
+          "estimatedTime": "90-180 mins",
+          "completed": false,
+          "checklist": [
+            "Test all endpoints from API testing workflow",
+            "Check for IDOR vulnerabilities",
+            "Test authentication/authorization",
+            "Test for injection vulnerabilities",
+            "Check rate limiting",
+            "Test business logic flaws",
+            "Verify token security",
+            "Test session management"
+          ]
+        },
+        {
+          "id": 6,
+          "title": "Dynamic Analysis with Frida",
+          "type": "manual",
+          "description": "Runtime manipulation and analysis",
+          "tools": ["Frida", "Objection"],
+          "estimatedTime": "60-90 mins",
+          "completed": false,
+          "checklist": [
+            "Hook authentication functions",
+            "Bypass root detection",
+            "Bypass jailbreak detection",
+            "Hook cryptographic functions",
+            "Dump encryption keys",
+            "Test runtime manipulation",
+            "Hook sensitive functions",
+            "Analyze app behavior"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "auth-testing",
+      "name": "Authentication Testing Workflow",
+      "description": "Comprehensive authentication security testing",
+      "category": "testing",
+      "estimatedTime": "2-4 hours",
+      "difficulty": "intermediate",
+      "steps": [
+        {
+          "id": 1,
+          "title": "Password Policy Testing",
+          "type": "manual",
+          "description": "Test password strength requirements and policies",
+          "tools": ["Burp Suite", "Manual Testing"],
+          "estimatedTime": "20-30 mins",
+          "completed": false,
+          "checklist": [
+            "Test minimum password length",
+            "Test for complexity requirements",
+            "Try weak passwords (password, 123456)",
+            "Test password reuse",
+            "Check password history",
+            "Test password expiration",
+            "Verify secure password storage"
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Brute Force Protection",
+          "type": "manual",
+          "description": "Test for account lockout and rate limiting",
+          "tools": ["Burp Intruder", "Hydra"],
+          "estimatedTime": "30-45 mins",
+          "completed": false,
+          "checklist": [
+            "Test login rate limiting",
+            "Test account lockout after failures",
+            "Test CAPTCHA implementation",
+            "Test for user enumeration",
+            "Test IP-based blocking",
+            "Test lockout bypass techniques"
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Password Reset Testing",
+          "type": "manual",
+          "description": "Test password reset functionality for flaws",
+          "tools": ["Burp Suite", "Email access"],
+          "estimatedTime": "45-60 mins",
+          "completed": false,
+          "checklist": [
+            "Test reset token predictability",
+            "Test token expiration",
+            "Test token reuse",
+            "Test account takeover via reset",
+            "Test for user enumeration",
+            "Check email link security",
+            "Test host header injection",
+            "Verify old password invalidation"
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Session Management",
+          "type": "manual",
+          "description": "Test session handling security",
+          "tools": ["Burp Suite", "Cookie editor"],
+          "estimatedTime": "45-60 mins",
+          "completed": false,
+          "checklist": [
+            "Test session timeout",
+            "Test concurrent sessions",
+            "Check cookie security flags",
+            "Test session fixation",
+            "Test logout functionality",
+            "Test session after password change",
+            "Verify CSRF protection"
+          ]
+        }
+      ]
+    }
+  ]
+}

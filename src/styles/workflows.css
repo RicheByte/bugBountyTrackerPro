@@ -1,0 +1,440 @@
+/* ==========================================================================
+   Workflows Feature Styles
+   ========================================================================== */
+
+/* Workflows Container Layout */
+.workflows-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Workflows Sidebar */
+.workflows-sidebar {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.workflows-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.workflows-header h3 {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.workflows-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Workflow Cards */
+.workflow-card {
+    background: var(--bg-primary);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--accent);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.workflow-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.workflow-card.active {
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow);
+}
+
+.workflow-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.workflow-card-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.workflow-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--bg-tertiary);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.workflow-progress-bar {
+    height: 100%;
+    background: var(--accent);
+    transition: width var(--transition-speed);
+}
+
+/* Workflows Content Area */
+.workflows-content {
+    background: var(--bg-primary);
+    overflow-y: auto;
+}
+
+/* Workflow Builder */
+.workflow-builder {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.workflow-header {
+    margin-bottom: 1.5rem;
+}
+
+.workflow-title-input {
+    width: 100%;
+    font-size: 1.75rem;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.workflow-title-input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent);
+}
+
+.workflow-description-input {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Workflow Toolbar */
+.workflow-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+}
+
+.step-type-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Workflow Steps */
+.workflow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    transition: all var(--transition-speed);
+    cursor: move;
+    position: relative;
+}
+
+.step-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.step-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+.step-card.drag-over {
+    border-color: var(--accent);
+    border-width: 2px;
+    padding: calc(1.25rem - 1px);
+}
+
+/* Step Header */
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.step-left {
+    flex: 1;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.step-number {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--accent);
+    min-width: 2rem;
+}
+
+.step-type {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.step-type.action {
+    background: #3b82f6;
+    color: white;
+}
+
+.step-type.check {
+    background: #10b981;
+    color: white;
+}
+
+.step-type.note {
+    background: #f59e0b;
+    color: white;
+}
+
+.step-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.drag-handle {
+    cursor: move;
+    padding: 0.25rem 0.5rem;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    user-select: none;
+}
+
+.drag-handle:hover {
+    color: var(--text-primary);
+}
+
+/* Step Content */
+.step-content {
+    margin-left: 2.75rem;
+}
+
+.step-title-input {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.step-description-input {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+}
+
+.step-command {
+    margin-top: 0.75rem;
+}
+
+.step-command label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.step-command-input {
+    width: 100%;
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 0.85rem;
+    background: var(--bg-tertiary);
+}
+
+.step-expected {
+    margin-top: 0.75rem;
+}
+
+.step-expected label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.step-expected-input {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+}
+
+/* Step Checkbox (for execution tracking) */
+.step-checkbox {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.step-checkbox label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.step-card.completed {
+    background: var(--bg-tertiary);
+    opacity: 0.8;
+}
+
+.step-card.completed .step-number {
+    color: #10b981;
+    text-decoration: line-through;
+}
+
+/* Add Step Button */
+.add-step-area {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.add-step-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--bg-secondary);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+}
+
+.add-step-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--bg-tertiary);
+}
+
+/* Workflow Statistics */
+.workflow-stats {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* Workflow Execution Mode */
+.execution-mode-banner {
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.execution-progress {
+    font-size: 0.9rem;
+}
+
+/* Drag and Drop Visual Feedback */
+.drop-indicator {
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 0.5rem 0;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .workflows-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .workflows-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+        max-height: 40vh;
+    }
+    
+    .workflow-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .workflow-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .step-header {
+        flex-direction: column;
+    }
+    
+    .step-actions {
+        align-self: flex-end;
+    }
+}

@@ -8,6 +8,12 @@ class BugBountyTracker {
         this.currentNoteItem = null;
         this.checklistData = null;
         this.viewMode = 'tree'; // 'tree' or 'canvas'
+        this.currentTab = 'checklist';
+        
+        // Component instances
+        this.writeupEditor = null;
+        this.workflowBuilder = null;
+        this.notesManager = null;
         
         this.init();
     }
@@ -21,11 +27,40 @@ class BugBountyTracker {
             console.error('Failed to load checklist data:', error);
         }
 
+        // Initialize components
+        this.initializeComponents();
+
         this.bindEvents();
         this.renderProjectsList();
     }
 
+    initializeComponents() {
+        // Initialize WriteupManager
+        this.writeupEditor = new WriteupManager(
+            document.getElementById('writeupsContent'),
+            document.getElementById('writeupsList')
+        );
+
+        // Initialize WorkflowManager
+        this.workflowBuilder = new WorkflowManager(
+            document.getElementById('workflowsContent'),
+            document.getElementById('workflowsList')
+        );
+
+        // Initialize NotesManagerComponent
+        this.notesManager = new NotesManagerComponent(
+            document.getElementById('notesContent'),
+            document.getElementById('notesList'),
+            document.getElementById('notesSearch')
+        );
+    }
+
     bindEvents() {
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
+        });
+
         // Project management
         document.getElementById('createProject').addEventListener('click', () => this.createProject());
         document.getElementById('newProject').addEventListener('click', () => this.newProject());
@@ -38,10 +73,19 @@ class BugBountyTracker {
         document.getElementById('expandAll').addEventListener('click', () => this.expandAll());
         document.getElementById('collapseAll').addEventListener('click', () => this.collapseAll());
 
-        // Notes management
+        // Notes management (checklist task notes)
         document.getElementById('saveNote').addEventListener('click', () => this.saveNote());
         document.getElementById('clearNote').addEventListener('click', () => this.clearNote());
         document.getElementById('closeNotes').addEventListener('click', () => this.hideNotes());
+
+        // Writeup buttons
+        document.getElementById('newWriteup').addEventListener('click', () => this.createWriteup());
+
+        // Workflow buttons
+        document.getElementById('newWorkflow').addEventListener('click', () => this.createWorkflow());
+
+        // Notes buttons
+        document.getElementById('newNote').addEventListener('click', () => this.createNote());
 
         // Modal
         document.querySelector('.close').addEventListener('click', () => this.hideModal());
@@ -50,6 +94,46 @@ class BugBountyTracker {
                 this.hideModal();
             }
         });
+    }
+
+    switchTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === tabName);
+        });
+
+        // Update tab panes
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        
+        const targetTab = document.getElementById(`${tabName}Tab`);
+        if (targetTab) {
+            targetTab.classList.add('active');
+        }
+
+        this.currentTab = tabName;
+
+        // Load data for the selected tab
+        if (this.currentProject) {
+            this.loadTabData(tabName);
+        }
+    }
+
+    loadTabData(tabName) {
+        if (!this.currentProject) return;
+
+        switch (tabName) {
+            case 'writeups':
+                this.loadWriteups();
+                break;
+            case 'workflows':
+                this.loadWorkflows();
+                break;
+            case 'notes':
+                this.loadNotes();
+                break;
+        }
     }
 
     createProject() {
@@ -69,7 +153,10 @@ class BugBountyTracker {
             scope,
             createdAt: new Date().toISOString(),
             checklist: this.initializeChecklist(),
-            notes: {}
+            notes: {}, // Checklist task notes
+            writeups: [],
+            workflows: [],
+            projectNotes: [] // New notes feature
         };
 
         this.projects.push(project);
@@ -466,18 +553,37 @@ class BugBountyTracker {
     }
 
     showNotesPanel(taskId) {
+        if (!this.currentProject) {
+            alert('Please select a project first');
+            return;
+        }
+        
         this.currentNoteItem = taskId;
         const [sectionIndex, subsectionIndex, taskIndex] = taskId.split('-').map(Number);
         
         let task;
-        if (taskIndex !== undefined) {
-            task = this.currentProject.checklist[sectionIndex].subsections[subsectionIndex].tasks[taskIndex];
-        } else {
-            task = this.currentProject.checklist[sectionIndex].tasks[subsectionIndex];
-        }
+        try {
+            if (taskIndex !== undefined) {
+                // Task in subsection
+                task = this.currentProject.checklist[sectionIndex].subsections[subsectionIndex].tasks[taskIndex];
+            } else {
+                // Task directly in section
+                task = this.currentProject.checklist[sectionIndex].tasks[subsectionIndex];
+            }
 
-        document.getElementById('notesEditor').value = task.notes || '';
-        document.getElementById('notesPanel').style.display = 'flex';
+            const notesEditor = document.getElementById('notesEditor');
+            const notesPanel = document.getElementById('notesPanel');
+            
+            if (notesEditor && notesPanel && task) {
+                notesEditor.value = task.notes || '';
+                notesPanel.style.display = 'flex';
+            } else {
+                console.error('Notes panel elements not found or task is undefined');
+            }
+        } catch (error) {
+            console.error('Error showing notes panel:', error);
+            alert('Error opening notes panel. Please try again.');
+        }
     }
 
     hideNotes() {
@@ -486,19 +592,35 @@ class BugBountyTracker {
     }
 
     saveNote() {
-        if (!this.currentNoteItem) return;
-
-        const note = document.getElementById('notesEditor').value.trim();
-        const [sectionIndex, subsectionIndex, taskIndex] = this.currentNoteItem.split('-').map(Number);
-
-        if (taskIndex !== undefined) {
-            this.currentProject.checklist[sectionIndex].subsections[subsectionIndex].tasks[taskIndex].notes = note;
-        } else {
-            this.currentProject.checklist[sectionIndex].tasks[subsectionIndex].notes = note;
+        if (!this.currentNoteItem) {
+            alert('No note selected');
+            return;
+        }
+        
+        if (!this.currentProject) {
+            alert('No project selected');
+            return;
         }
 
-        this.renderChecklist();
-        this.hideNotes();
+        try {
+            const note = document.getElementById('notesEditor').value.trim();
+            const [sectionIndex, subsectionIndex, taskIndex] = this.currentNoteItem.split('-').map(Number);
+
+            if (taskIndex !== undefined) {
+                // Task in subsection
+                this.currentProject.checklist[sectionIndex].subsections[subsectionIndex].tasks[taskIndex].notes = note;
+            } else {
+                // Task directly in section
+                this.currentProject.checklist[sectionIndex].tasks[subsectionIndex].notes = note;
+            }
+
+            this.renderChecklist();
+            this.hideNotes();
+            alert('Note saved successfully!');
+        } catch (error) {
+            console.error('Error saving note:', error);
+            alert('Error saving note. Please try again.');
+        }
     }
 
     clearNote() {
@@ -532,6 +654,72 @@ class BugBountyTracker {
             }
         });
         this.renderChecklist();
+    }
+
+    // ========== Writeups Methods ==========
+    loadWriteups() {
+        if (!this.currentProject || !this.currentProject.writeups) {
+            this.currentProject.writeups = [];
+        }
+        this.writeupEditor.loadWriteups(
+            this.currentProject.writeups,
+            (writeups) => {
+                this.currentProject.writeups = writeups;
+            }
+        );
+    }
+
+    createWriteup() {
+        if (!this.currentProject) {
+            alert('Please select or create a project first');
+            this.switchTab('checklist');
+            return;
+        }
+        this.writeupEditor.createNew();
+    }
+
+    // ========== Workflows Methods ==========
+    loadWorkflows() {
+        if (!this.currentProject || !this.currentProject.workflows) {
+            this.currentProject.workflows = [];
+        }
+        this.workflowBuilder.loadWorkflows(
+            this.currentProject.workflows,
+            (workflows) => {
+                this.currentProject.workflows = workflows;
+            }
+        );
+    }
+
+    createWorkflow() {
+        if (!this.currentProject) {
+            alert('Please select or create a project first');
+            this.switchTab('checklist');
+            return;
+        }
+        this.workflowBuilder.createNew();
+    }
+
+    // ========== Notes Methods ==========
+    loadNotes() {
+        if (!this.currentProject || !this.currentProject.projectNotes) {
+            this.currentProject.projectNotes = [];
+        }
+        this.notesManager.loadNotes(
+            this.currentProject.projectNotes,
+            (notes) => {
+                this.currentProject.projectNotes = notes;
+            }
+        );
+    }
+
+    createNote() {
+        if (!this.currentProject) {
+            alert('Please select or create a project first');
+            this.switchTab('checklist');
+            return;
+        }
+        this.notesManager.createNew();
     }
 
     clearProjectForm() {

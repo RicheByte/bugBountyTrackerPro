@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug Bounty Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/styles/writeups.css">
+    <link rel="stylesheet" href="src/styles/workflows.css">
+    <link rel="stylesheet" href="src/styles/notes.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -12,7 +15,7 @@
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
-            <h1>🐛 Bug Bounty Tracker</h1>
+            <h1>🐛 Bug Bounty Tracker Pro</h1>
             <div class="header-actions">
                 <button id="newProject" class="btn btn-primary">New Project</button>
                 <button id="saveProject" class="btn btn-secondary">Save Project</button>
@@ -41,26 +44,117 @@
                 </div>
             </div>
 
-            <!-- Canvas Area -->
-            <div class="canvas-area">
-                <div class="canvas-header">
-                    <h2 id="currentProjectName">No Project Selected</h2>
-                    <div class="canvas-controls">
-                        <button id="toggleView" class="btn btn-outline">Toggle View</button>
-                        <button id="expandAll" class="btn btn-outline">Expand All</button>
-                        <button id="collapseAll" class="btn btn-outline">Collapse All</button>
+            <!-- Main Area with Tabs -->
+            <div class="main-area">
+                <!-- Tab Navigation -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <h2 id="currentProjectName">No Project Selected</h2>
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" data-tab="checklist">
+                                ✓ Checklist
+                            </button>
+                            <button class="tab-btn" data-tab="writeups">
+                                📝 Writeups
+                            </button>
+                            <button class="tab-btn" data-tab="workflows">
+                                🔄 Workflows
+                            </button>
+                            <button class="tab-btn" data-tab="notes">
+                                📋 Notes
+                            </button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="canvas-container" id="canvasContainer">
-                    <!-- Checklist tree will be rendered here -->
+
+                    <!-- Tab Content -->
+                    <div class="tabs-content">
+                        <!-- Checklist Tab -->
+                        <div class="tab-pane active" id="checklistTab">
+                            <div class="canvas-controls">
+                                <button id="toggleView" class="btn btn-outline">Toggle View</button>
+                                <button id="expandAll" class="btn btn-outline">Expand All</button>
+                                <button id="collapseAll" class="btn btn-outline">Collapse All</button>
+                            </div>
+                            <div class="canvas-container" id="canvasContainer">
+                                <!-- Checklist tree will be rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Writeups Tab -->
+                        <div class="tab-pane" id="writeupsTab">
+                            <div class="writeups-container">
+                                <div class="writeups-sidebar">
+                                    <div class="writeups-header">
+                                        <h3>Writeups</h3>
+                                        <button id="newWriteup" class="btn btn-primary btn-sm">+ New</button>
+                                    </div>
+                                    <div class="writeups-list" id="writeupsList">
+                                        <!-- Writeups list -->
+                                    </div>
+                                </div>
+                                <div class="writeups-content" id="writeupsContent">
+                                    <div class="empty-state">
+                                        <p>Select a writeup or create a new one</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workflows Tab -->
+                        <div class="tab-pane" id="workflowsTab">
+                            <div class="workflows-container">
+                                <div class="workflows-sidebar">
+                                    <div class="workflows-header">
+                                        <h3>Workflows</h3>
+                                        <button id="newWorkflow" class="btn btn-primary btn-sm">+ New</button>
+                                    </div>
+                                    <div class="workflows-filter">
+                                        <button class="filter-btn active" data-filter="all">All</button>
+                                        <button class="filter-btn" data-filter="templates">Templates</button>
+                                        <button class="filter-btn" data-filter="custom">Custom</button>
+                                    </div>
+                                    <div class="workflows-list" id="workflowsList">
+                                        <!-- Workflows list -->
+                                    </div>
+                                </div>
+                                <div class="workflows-content" id="workflowsContent">
+                                    <div class="empty-state">
+                                        <p>Select a workflow or create a new one</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes Tab -->
+                        <div class="tab-pane" id="notesTab">
+                            <div class="notes-container">
+                                <div class="notes-sidebar">
+                                    <div class="notes-header">
+                                        <h3>Notes</h3>
+                                        <button id="newNote" class="btn btn-primary btn-sm">+ New</button>
+                                    </div>
+                                    <div class="notes-search">
+                                        <input type="text" id="notesSearch" placeholder="Search notes..." class="form-input">
+                                    </div>
+                                    <div class="notes-list" id="notesList">
+                                        <!-- Notes list -->
+                                    </div>
+                                </div>
+                                <div class="notes-content" id="notesContent">
+                                    <div class="empty-state">
+                                        <p>Select a note or create a new one</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Notes Panel -->
-            <div class="notes-panel" id="notesPanel">
+            <!-- Quick Notes Panel (for checklist tasks) -->
+            <div class="notes-panel" id="notesPanel" style="display: none;">
                 <div class="notes-header">
-                    <h3>Notes</h3>
+                    <h3>Task Notes</h3>
                     <button id="closeNotes" class="btn btn-outline">×</button>
                 </div>
                 <div class="notes-content">
@@ -89,6 +183,24 @@
         </div>
     </div>
 
+    <!-- Utilities -->
+    <script src="src/utils/markdown.js"></script>
+    <script src="src/utils/export.js"></script>
+    <script src="src/utils/validators.js"></script>
+    
+    <!-- Components -->
+    <script src="src/components/CVSSCalculator.js"></script>
+    <script src="src/components/TemplateSelector.js"></script>
+    <script src="src/components/WriteupEditor.js"></script>
+    <script src="src/components/WorkflowBuilder.js"></script>
+    <script src="src/components/NotesManager.js"></script>
+    
+    <!-- Manager Components (UI Controllers) -->
+    <script src="src/components/WriteupManager.js"></script>
+    <script src="src/components/WorkflowManager.js"></script>
+    <script src="src/components/NotesManagerComponent.js"></script>
+    
+    <!-- Main renderer -->
     <script src="renderer.js"></script>
 </body>
 </html>
