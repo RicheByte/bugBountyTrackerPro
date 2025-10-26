@@ -328,17 +328,46 @@ body {
     font-size: 4rem;
     margin-bottom: 1rem;
     opacity: 0.5;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 .empty-state h3 {
     color: var(--text-secondary);
     font-weight: 500;
     margin-bottom: 0.5rem;
+    font-size: 1.25rem;
 }
 
 .empty-state p {
     max-width: 400px;
     margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.empty-state-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.empty-state-hint {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    max-width: 500px;
+    font-size: 0.9rem;
+}
+
+.empty-state-hint strong {
+    color: var(--accent);
 }
 
 /* ==========================================================================

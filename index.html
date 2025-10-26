@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug Bounty Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/styles/dashboard.css">
     <link rel="stylesheet" href="src/styles/writeups.css">
     <link rel="stylesheet" href="src/styles/workflows.css">
     <link rel="stylesheet" href="src/styles/notes.css">
+    <link rel="stylesheet" href="src/styles/welcome.css">
+    <link rel="stylesheet" href="src/styles/tooltips.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -17,10 +20,26 @@
         <header class="app-header">
             <h1>🐛 Bug Bounty Tracker Pro</h1>
             <div class="header-actions">
-                <button id="newProject" class="btn btn-primary">New Project</button>
-                <button id="saveProject" class="btn btn-secondary">Save Project</button>
-                <button id="loadProject" class="btn btn-secondary">Load Project</button>
-                <button id="exportPdf" class="btn btn-success">Export PDF</button>
+                <button id="newProject" class="btn btn-primary" 
+                        data-tooltip="Create a new project" 
+                        data-tooltip-position="bottom">
+                    New Project
+                </button>
+                <button id="saveProject" class="btn btn-secondary" 
+                        data-tooltip="Save current project to file" 
+                        data-tooltip-position="bottom">
+                    Save Project
+                </button>
+                <button id="loadProject" class="btn btn-secondary" 
+                        data-tooltip="Load existing project from file" 
+                        data-tooltip-position="bottom">
+                    Load Project
+                </button>
+                <button id="exportPdf" class="btn btn-success" 
+                        data-tooltip="Export project report as PDF" 
+                        data-tooltip-position="bottom">
+                    Export PDF
+                </button>
             </div>
         </header>
 
@@ -51,16 +70,29 @@
                     <div class="tabs-header">
                         <h2 id="currentProjectName">No Project Selected</h2>
                         <div class="tabs-nav">
-                            <button class="tab-btn active" data-tab="checklist">
+                            <button class="tab-btn active" data-tab="dashboard"
+                                    data-tooltip="Project overview and quick actions"
+                                    data-tooltip-position="bottom">
+                                📊 Dashboard
+                            </button>
+                            <button class="tab-btn" data-tab="checklist"
+                                    data-tooltip="Security testing checklist"
+                                    data-tooltip-position="bottom">
                                 ✓ Checklist
                             </button>
-                            <button class="tab-btn" data-tab="writeups">
+                            <button class="tab-btn" data-tab="writeups"
+                                    data-tooltip="Document vulnerabilities found"
+                                    data-tooltip-position="bottom">
                                 📝 Writeups
                             </button>
-                            <button class="tab-btn" data-tab="workflows">
+                            <button class="tab-btn" data-tab="workflows"
+                                    data-tooltip="Custom testing workflows"
+                                    data-tooltip-position="bottom">
                                 🔄 Workflows
                             </button>
-                            <button class="tab-btn" data-tab="notes">
+                            <button class="tab-btn" data-tab="notes"
+                                    data-tooltip="Quick notes and observations"
+                                    data-tooltip-position="bottom">
                                 📋 Notes
                             </button>
                         </div>
@@ -68,12 +100,31 @@
 
                     <!-- Tab Content -->
                     <div class="tabs-content">
+                        <!-- Dashboard Tab -->
+                        <div class="tab-pane active" id="dashboardTab">
+                            <div id="dashboardContainer">
+                                <!-- Dashboard content will be rendered here -->
+                            </div>
+                        </div>
+
                         <!-- Checklist Tab -->
-                        <div class="tab-pane active" id="checklistTab">
+                        <div class="tab-pane" id="checklistTab">
                             <div class="canvas-controls">
-                                <button id="toggleView" class="btn btn-outline">Toggle View</button>
-                                <button id="expandAll" class="btn btn-outline">Expand All</button>
-                                <button id="collapseAll" class="btn btn-outline">Collapse All</button>
+                                <button id="toggleView" class="btn btn-outline"
+                                        data-tooltip="Switch between tree and canvas view"
+                                        data-tooltip-position="bottom">
+                                    Toggle View
+                                </button>
+                                <button id="expandAll" class="btn btn-outline"
+                                        data-tooltip="Expand all checklist sections"
+                                        data-tooltip-position="bottom">
+                                    Expand All
+                                </button>
+                                <button id="collapseAll" class="btn btn-outline"
+                                        data-tooltip="Collapse all checklist sections"
+                                        data-tooltip-position="bottom">
+                                    Collapse All
+                                </button>
                             </div>
                             <div class="canvas-container" id="canvasContainer">
                                 <!-- Checklist tree will be rendered here -->
@@ -194,6 +245,8 @@
     <script src="src/components/WriteupEditor.js"></script>
     <script src="src/components/WorkflowBuilder.js"></script>
     <script src="src/components/NotesManager.js"></script>
+    <script src="src/components/WelcomeScreen.js"></script>
+    <script src="src/components/DashboardManager.js"></script>
     
     <!-- Manager Components (UI Controllers) -->
     <script src="src/components/WriteupManager.js"></script>

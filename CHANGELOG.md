@@ -6,6 +6,131 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.0.0] - 2025-10-26
+
+### 🚀 Major UX Redesign: Enhanced User Experience & Onboarding
+
+This release focuses on dramatically improving the user experience with a new Dashboard, Welcome Screen, tooltips, and better empty states throughout the application.
+
+---
+
+### Added
+
+#### Dashboard Tab
+- **Project Overview Card**: Shows project name, URL, scope, and creation date
+- **Statistics Grid**: 
+  - Tests completed progress (with percentage)
+  - Vulnerabilities found (with severity breakdown)
+  - Active workflows count
+  - Notes saved count
+- **Quick Actions Section**: 6 action cards for common tasks
+  - Continue Testing
+  - Add Finding
+  - Start Workflow
+  - Export Report
+  - Quick Note
+  - View Findings
+- **Recent Activity Feed**: Shows last 5 activities with timestamps
+- **Progress Wizard**: Visual 4-step workflow indicator
+  - Setup Project ✓
+  - Run Tests (active when checklist started)
+  - Document Findings (active when writeups exist)
+  - Export Report (enabled when complete)
+- **Contextual Hints**: Smart tips based on current progress
+
+#### Welcome Screen & Onboarding
+- **First-Time User Welcome Modal**: 
+  - Hero section with feature highlights
+  - 4 feature cards explaining capabilities
+  - "Get Started" and "Take a Tour" options
+  - "Don't show again" checkbox
+- **Quick Start Flow**:
+  - Create Your First Project (guided setup)
+  - Load Sample Project (pre-configured demo)
+  - Load Existing Project
+- **Interactive Tour**: Step-by-step guide through all features
+- **Sample Project Generator**: Pre-loaded with:
+  - Example vulnerability writeup
+  - Completed checklist items
+  - Sample notes
+  - Realistic project structure
+
+#### Tooltip System
+- **Comprehensive Tooltips**: Added to all interactive elements
+  - Header buttons (New, Save, Load, Export)
+  - Tab navigation buttons
+  - Checklist controls
+  - Action buttons throughout
+- **Positioning Options**: Top, bottom, left, right
+- **Theme Variations**: Light and dark theme support
+- **Type Indicators**: Success, warning, error, info colors
+- **Smart Delays**: Short and long delay options
+- **Responsive**: Auto-hides on touch devices
+
+#### Enhanced Empty States
+- **Dashboard Empty State**:
+  - Welcoming icon and message
+  - Clear call-to-action buttons
+  - Helpful tips for getting started
+- **Checklist Empty State**:
+  - Explains purpose of checklist
+  - Quick access to create/load project
+  - Usage tip included
+- **Animated Icons**: Floating animations on empty state icons
+- **Actionable Messages**: Each empty state provides next steps
+
+#### Visual Improvements
+- **Progress Indicators**: 
+  - Animated progress bars
+  - Pulse animation on active steps
+  - Color-coded status (completed, active, pending, locked)
+- **Severity Badges**: Color-coded vulnerability severity indicators
+  - 🔴 Critical (red)
+  - 🟠 High (orange)
+  - 🟡 Medium (yellow)
+  - 🟢 Low (green)
+- **Stat Cards**: Hover effects with top border accent
+- **Activity Items**: Left border accent with hover effects
+- **Better Spacing**: Improved padding and margins throughout
+
+### Changed
+- **Default Tab**: Now opens to Dashboard instead of Checklist
+- **Tab Order**: Dashboard → Checklist → Writeups → Workflows → Notes
+- **Tab Icons**: Added emoji icons for better visual distinction
+- **Project Creation**: Now switches to Dashboard after creation
+- **Empty State Messages**: More helpful and actionable
+- **Color Scheme**: Enhanced with better accent colors for status indicators
+
+### Fixed
+- Empty state styling inconsistencies
+- Missing guidance for new users
+- Unclear button purposes
+- No visual feedback on progress
+- Difficult to understand workflow
+
+### Technical Improvements
+- **New Components**:
+  - `DashboardManager.js` - Dashboard functionality
+  - `WelcomeScreen.js` - Onboarding flow
+- **New Stylesheets**:
+  - `dashboard.css` - Dashboard-specific styles
+  - `welcome.css` - Welcome modal styles
+  - `tooltips.css` - Tooltip system
+- **Enhanced Styles**:
+  - Improved empty state animations
+  - Better responsive design
+  - Consistent spacing and sizing
+- **LocalStorage Integration**: Remembers welcome screen preference
+- **Event System**: Custom events for dashboard and welcome actions
+
+### Performance
+- CSS animations optimized with `will-change` and GPU acceleration
+- Conditional rendering of dashboard components
+- Lazy loading of activity feed
+- Efficient tooltip positioning calculations
+
+---
+
 ## [2.0.0] - 2025-10-26
 
 ### 🎉 Major Release: Complete Platform Redesign

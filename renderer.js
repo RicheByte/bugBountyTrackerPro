@@ -8,12 +8,14 @@ class BugBountyTracker {
         this.currentNoteItem = null;
         this.checklistData = null;
         this.viewMode = 'tree'; // 'tree' or 'canvas'
-        this.currentTab = 'checklist';
+        this.currentTab = 'dashboard';
         
         // Component instances
         this.writeupEditor = null;
         this.workflowBuilder = null;
         this.notesManager = null;
+        this.dashboardManager = null;
+        this.welcomeScreen = null;
         
         this.init();
     }
@@ -32,9 +34,20 @@ class BugBountyTracker {
 
         this.bindEvents();
         this.renderProjectsList();
+        
+        // Show welcome screen for first-time users
+        this.showWelcomeIfNeeded();
     }
 
     initializeComponents() {
+        // Initialize DashboardManager
+        this.dashboardManager = new DashboardManager(
+            document.getElementById('dashboardContainer')
+        );
+
+        // Initialize WelcomeScreen
+        this.welcomeScreen = new WelcomeScreen();
+
         // Initialize WriteupManager
         this.writeupEditor = new WriteupManager(
             document.getElementById('writeupsContent'),
@@ -94,6 +107,12 @@ class BugBountyTracker {
                 this.hideModal();
             }
         });
+
+        // Dashboard actions
+        document.addEventListener('dashboard-action', (e) => this.handleDashboardAction(e.detail.action));
+
+        // Welcome screen actions
+        document.addEventListener('welcome-action', (e) => this.handleWelcomeAction(e.detail.action));
     }
 
     switchTab(tabName) {
@@ -117,6 +136,9 @@ class BugBountyTracker {
         // Load data for the selected tab
         if (this.currentProject) {
             this.loadTabData(tabName);
+        } else if (tabName === 'dashboard') {
+            // Always render dashboard even without project
+            this.dashboardManager.loadDashboard(null);
         }
     }
 
@@ -124,6 +146,9 @@ class BugBountyTracker {
         if (!this.currentProject) return;
 
         switch (tabName) {
+            case 'dashboard':
+                this.loadDashboard();
+                break;
             case 'writeups':
                 this.loadWriteups();
                 break;
@@ -164,7 +189,11 @@ class BugBountyTracker {
         
         this.renderProjectsList();
         this.renderChecklist();
+        this.loadDashboard();
         this.clearProjectForm();
+        
+        // Switch to dashboard tab
+        this.switchTab('dashboard');
     }
 
     initializeChecklist() {
@@ -363,6 +392,7 @@ class BugBountyTracker {
         this.currentProject = project;
         this.renderProjectsList();
         this.renderChecklist();
+        this.loadDashboard();
         document.getElementById('currentProjectName').textContent = project.name;
     }
 
@@ -370,7 +400,24 @@ class BugBountyTracker {
         const container = document.getElementById('canvasContainer');
         
         if (!this.currentProject) {
-            container.innerHTML = '<div class="no-project">Please create or select a project to start</div>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <h3>No Project Selected</h3>
+                    <p>Create or select a project to start your security testing checklist</p>
+                    <div class="empty-state-actions">
+                        <button class="btn btn-primary" onclick="document.getElementById('projectName').focus()">
+                            Create New Project
+                        </button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('loadProject').click()">
+                            Load Project
+                        </button>
+                    </div>
+                    <div class="empty-state-hint">
+                        <p><strong>💡 Tip:</strong> The checklist helps you systematically test for vulnerabilities based on industry standards.</p>
+                    </div>
+                </div>
+            `;
             return;
         }
 
@@ -672,7 +719,7 @@ class BugBountyTracker {
     createWriteup() {
         if (!this.currentProject) {
             alert('Please select or create a project first');
-            this.switchTab('checklist');
+            this.switchTab('dashboard');
             return;
         }
         this.writeupEditor.createNew();
@@ -694,7 +741,7 @@ class BugBountyTracker {
     createWorkflow() {
         if (!this.currentProject) {
             alert('Please select or create a project first');
-            this.switchTab('checklist');
+            this.switchTab('dashboard');
             return;
         }
         this.workflowBuilder.createNew();
@@ -716,10 +763,124 @@ class BugBountyTracker {
     createNote() {
         if (!this.currentProject) {
             alert('Please select or create a project first');
-            this.switchTab('checklist');
+            this.switchTab('dashboard');
             return;
         }
         this.notesManager.createNew();
+    }
+
+    // ========== Dashboard Methods ==========
+    loadDashboard() {
+        this.dashboardManager.loadDashboard(this.currentProject);
+    }
+
+    handleDashboardAction(action) {
+        switch(action) {
+            case 'continue-testing':
+                this.switchTab('checklist');
+                break;
+            case 'add-finding':
+                this.switchTab('writeups');
+                this.createWriteup();
+                break;
+            case 'start-workflow':
+                this.switchTab('workflows');
+                break;
+            case 'export-report':
+                this.exportPdf();
+                break;
+            case 'quick-note':
+                this.switchTab('notes');
+                this.createNote();
+                break;
+            case 'view-findings':
+                this.switchTab('writeups');
+                break;
+            case 'create-project':
+                document.getElementById('projectName').focus();
+                break;
+            case 'load-project':
+                this.loadProject();
+                break;
+        }
+    }
+
+    // ========== Welcome Screen Methods ==========
+    showWelcomeIfNeeded() {
+        if (this.welcomeScreen && this.welcomeScreen.shouldShow()) {
+            this.welcomeScreen.show();
+        }
+    }
+
+    handleWelcomeAction(action) {
+        switch(action) {
+            case 'create-project':
+                document.getElementById('projectName').focus();
+                break;
+            case 'load-project':
+                this.loadProject();
+                break;
+            case 'load-sample':
+                this.loadSampleProject();
+                break;
+        }
+    }
+
+    loadSampleProject() {
+        // Create a sample project for demonstration
+        const sampleProject = {
+            id: 'sample-' + Date.now().toString(),
+            name: 'Example Web App (Sample)',
+            url: 'https://example.com',
+            scope: 'web',
+            createdAt: new Date().toISOString(),
+            checklist: this.initializeChecklist(),
+            notes: {},
+            writeups: [
+                {
+                    id: 'sample-writeup-1',
+                    title: 'Cross-Site Scripting (XSS) in Search',
+                    severity: 'High',
+                    cvssScore: 7.5,
+                    description: 'The search functionality is vulnerable to reflected XSS attacks.',
+                    impact: 'An attacker can execute arbitrary JavaScript in the context of the victim\'s browser.',
+                    reproduction: '1. Navigate to search page\\n2. Enter: <script>alert(1)</script>\\n3. XSS triggers',
+                    mitigation: 'Implement proper input validation and output encoding.',
+                    createdAt: new Date().toISOString(),
+                    status: 'draft'
+                }
+            ],
+            workflows: [],
+            projectNotes: [
+                {
+                    id: 'sample-note-1',
+                    title: 'Initial Reconnaissance',
+                    content: 'Found several interesting subdomains during enumeration.',
+                    tags: ['recon', 'enumeration'],
+                    createdAt: new Date().toISOString()
+                }
+            ]
+        };
+
+        // Mark some checklist items as complete
+        if (sampleProject.checklist.length > 0) {
+            if (sampleProject.checklist[0].tasks && sampleProject.checklist[0].tasks.length > 0) {
+                sampleProject.checklist[0].tasks[0].completed = true;
+                sampleProject.checklist[0].tasks[0].notes = 'Completed reconnaissance phase';
+            }
+        }
+
+        this.projects.push(sampleProject);
+        this.currentProject = sampleProject;
+        
+        this.renderProjectsList();
+        this.renderChecklist();
+        this.loadDashboard();
+        
+        document.getElementById('currentProjectName').textContent = sampleProject.name;
+        this.switchTab('dashboard');
+        
+        alert('Sample project loaded! Explore the different tabs to see how everything works.');
     }
 
     clearProjectForm() {
