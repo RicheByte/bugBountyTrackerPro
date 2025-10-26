@@ -14,6 +14,9 @@ class DashboardManager {
         this.currentProject = project;
         this.activities = this.getRecentActivities();
         this.render();
+        
+        // Start auto-refresh for activity feed
+        this.startAutoRefresh();
     }
 
     render() {
@@ -274,11 +277,43 @@ class DashboardManager {
         });
 
         return `
-            <div class="severity-badges">
-                ${severities.critical > 0 ? `<span class="severity-badge critical" title="Critical">🔴 ${severities.critical}</span>` : ''}
-                ${severities.high > 0 ? `<span class="severity-badge high" title="High">🟠 ${severities.high}</span>` : ''}
-                ${severities.medium > 0 ? `<span class="severity-badge medium" title="Medium">🟡 ${severities.medium}</span>` : ''}
-                ${severities.low > 0 ? `<span class="severity-badge low" title="Low">🟢 ${severities.low}</span>` : ''}
+            <div class="severity-badges" role="group" aria-label="Filter findings by severity">
+                ${severities.critical > 0 ? `
+                    <button type="button" 
+                            class="severity-badge critical" 
+                            data-severity="critical" 
+                            title="Click to filter ${severities.critical} Critical findings"
+                            aria-label="Show ${severities.critical} critical severity findings">
+                        🔴 ${severities.critical}
+                    </button>
+                ` : ''}
+                ${severities.high > 0 ? `
+                    <button type="button" 
+                            class="severity-badge high" 
+                            data-severity="high" 
+                            title="Click to filter ${severities.high} High findings"
+                            aria-label="Show ${severities.high} high severity findings">
+                        🟠 ${severities.high}
+                    </button>
+                ` : ''}
+                ${severities.medium > 0 ? `
+                    <button type="button" 
+                            class="severity-badge medium" 
+                            data-severity="medium" 
+                            title="Click to filter ${severities.medium} Medium findings"
+                            aria-label="Show ${severities.medium} medium severity findings">
+                        🟡 ${severities.medium}
+                    </button>
+                ` : ''}
+                ${severities.low > 0 ? `
+                    <button type="button" 
+                            class="severity-badge low" 
+                            data-severity="low" 
+                            title="Click to filter ${severities.low} Low findings"
+                            aria-label="Show ${severities.low} low severity findings">
+                        🟢 ${severities.low}
+                    </button>
+                ` : ''}
             </div>
         `;
     }
@@ -334,6 +369,51 @@ class DashboardManager {
                 <div class="activity-message">${activity.message}</div>
             </div>
         `).join('');
+    }
+
+    startAutoRefresh() {
+        // Clear existing interval if any
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
+        
+        // Auto-refresh every 2 minutes
+        this.refreshInterval = setInterval(() => {
+            // Only refresh if page is visible
+            if (!document.hidden && this.currentProject) {
+                this.refreshActivityFeed();
+            }
+        }, 2 * 60 * 1000); // 2 minutes
+    }
+
+    refreshActivityFeed() {
+        const activityList = this.container.querySelector('.activity-list');
+        if (!activityList) return;
+        
+        // Add updating indicator
+        activityList.classList.add('updating');
+        
+        // Re-fetch activities
+        this.activities = this.getRecentActivities();
+        
+        // Fade out, update, fade in
+        setTimeout(() => {
+            activityList.innerHTML = this.renderActivities();
+            activityList.classList.remove('updating');
+            
+            // Update last updated timestamp
+            const timestamp = this.container.querySelector('.last-updated');
+            if (timestamp) {
+                timestamp.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            }
+        }, 300);
+    }
+
+    destroy() {
+        // Cleanup intervals to prevent memory leaks
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
     }
 
     getStepStatus(step) {
@@ -407,6 +487,26 @@ class DashboardManager {
             button.addEventListener('click', (e) => {
                 const action = e.currentTarget.dataset.action;
                 this.handleAction(action);
+            });
+        });
+        
+        // Severity badge → filter findings (NEW!)
+        this.container.querySelectorAll('.severity-badge[data-severity]').forEach(badge => {
+            badge.addEventListener('click', (e) => {
+                const severity = e.currentTarget.dataset.severity;
+                
+                // Visual feedback
+                badge.classList.add('filter-active');
+                setTimeout(() => badge.classList.remove('filter-active'), 300);
+                
+                const event = new CustomEvent('dashboard-action', {
+                    detail: { 
+                        action: 'filter-findings', 
+                        payload: { severity } 
+                    },
+                    bubbles: true
+                });
+                this.container.dispatchEvent(event);
             });
         });
     }

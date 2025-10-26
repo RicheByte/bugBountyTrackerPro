@@ -109,10 +109,13 @@ class BugBountyTracker {
         });
 
         // Dashboard actions
-        document.addEventListener('dashboard-action', (e) => this.handleDashboardAction(e.detail.action));
+        document.addEventListener('dashboard-action', (e) => this.handleDashboardAction(e.detail.action, e.detail.payload));
 
         // Welcome screen actions
         document.addEventListener('welcome-action', (e) => this.handleWelcomeAction(e.detail.action));
+        
+        // Initialize keyboard shortcuts
+        this.initKeyboardShortcuts();
     }
 
     switchTab(tabName) {
@@ -774,27 +777,40 @@ class BugBountyTracker {
         this.dashboardManager.loadDashboard(this.currentProject);
     }
 
-    handleDashboardAction(action) {
+    handleDashboardAction(action, payload = {}) {
         switch(action) {
             case 'continue-testing':
+                this.saveLastAction('continue-testing');
                 this.switchTab('checklist');
                 break;
             case 'add-finding':
+                this.saveLastAction('add-finding');
                 this.switchTab('writeups');
                 this.createWriteup();
                 break;
             case 'start-workflow':
+                this.saveLastAction('start-workflow');
                 this.switchTab('workflows');
                 break;
             case 'export-report':
+                this.saveLastAction('export-report');
                 this.exportPdf();
                 break;
             case 'quick-note':
+                this.saveLastAction('quick-note');
                 this.switchTab('notes');
                 this.createNote();
                 break;
             case 'view-findings':
+                this.saveLastAction('view-findings');
                 this.switchTab('writeups');
+                break;
+            case 'filter-findings':
+                if (payload && payload.severity) {
+                    this.saveLastAction('filter-findings', payload.severity);
+                    this.switchTab('writeups');
+                    this.applyWriteupsSeverityFilter(payload.severity);
+                }
                 break;
             case 'create-project':
                 document.getElementById('projectName').focus();
@@ -895,6 +911,341 @@ class BugBountyTracker {
 
     hideModal() {
         document.getElementById('projectModal').style.display = 'none';
+    }
+
+    // ========== Keyboard Shortcuts ==========
+    initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Alt combination
+            if (e.ctrlKey && e.altKey) {
+                // Don't trigger if user is typing in an input
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) {
+                    return;
+                }
+
+                let handled = false;
+                
+                switch(e.key.toLowerCase()) {
+                    case 't': // Testing (Checklist)
+                        if (this.currentProject) {
+                            this.switchTab('checklist');
+                            this.showToast('Switched to Testing Checklist', 'success');
+                            handled = true;
+                        }
+                        break;
+                    case 'f': // Findings (Writeups)
+                        if (this.currentProject) {
+                            this.switchTab('writeups');
+                            this.showToast('Switched to Findings', 'success');
+                            handled = true;
+                        }
+                        break;
+                    case 'w': // Workflows
+                        if (this.currentProject) {
+                            this.switchTab('workflows');
+                            this.showToast('Switched to Workflows', 'success');
+                            handled = true;
+                        }
+                        break;
+                    case 'e': // Export
+                        if (this.currentProject) {
+                            this.exportPdf();
+                            this.showToast('Exporting report...', 'info');
+                            handled = true;
+                        }
+                        break;
+                    case 'n': // New (context-aware)
+                        if (this.currentProject) {
+                            switch(this.currentTab) {
+                                case 'writeups':
+                                    this.createWriteup();
+                                    this.showToast('Creating new finding...', 'success');
+                                    break;
+                                case 'workflows':
+                                    this.createWorkflow();
+                                    this.showToast('Creating new workflow...', 'success');
+                                    break;
+                                case 'notes':
+                                    this.createNote();
+                                    this.showToast('Creating new note...', 'success');
+                                    break;
+                            }
+                            handled = true;
+                        }
+                        break;
+                    case 'v': // View Dashboard
+                        this.switchTab('dashboard');
+                        this.showToast('Switched to Dashboard', 'success');
+                        handled = true;
+                        break;
+                    case '/':
+                    case '?': // Show keyboard shortcuts help
+                        this.showKeyboardShortcuts();
+                        handled = true;
+                        break;
+                }
+
+                if (handled) {
+                    e.preventDefault();
+                }
+            }
+        });
+    }
+
+    showKeyboardShortcuts() {
+        const existingOverlay = document.querySelector('.shortcuts-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+            return;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'shortcuts-overlay';
+        overlay.innerHTML = `
+            <div class="shortcuts-content">
+                <div class="shortcuts-header">
+                    <h2>⌨️ Keyboard Shortcuts</h2>
+                    <button class="shortcuts-close" aria-label="Close shortcuts">&times;</button>
+                </div>
+                <div class="shortcuts-body">
+                    <div class="shortcut-section">
+                        <h3>Navigation</h3>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>V</kbd>
+                            <span>View Dashboard</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>
+                            <span>Testing Checklist</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>
+                            <span>Findings (Writeups)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>W</kbd>
+                            <span>Workflows</span>
+                        </div>
+                    </div>
+                    <div class="shortcut-section">
+                        <h3>Actions</h3>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>N</kbd>
+                            <span>New Item (context-aware)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>E</kbd>
+                            <span>Export Report</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>?</kbd>
+                            <span>Show/Hide Shortcuts</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="shortcuts-footer">
+                    <p>Shortcuts work when not typing in an input field</p>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Close button handler
+        overlay.querySelector('.shortcuts-close').addEventListener('click', () => {
+            overlay.remove();
+        });
+
+        // Click outside to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+
+        // Escape key to close
+        const escapeHandler = (e) => {
+            if (e.key === 'Escape') {
+                overlay.remove();
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+    }
+
+    // ========== Severity Filter ==========
+    applyWriteupsSeverityFilter(severity) {
+        if (!this.currentProject || !this.currentProject.writeups) {
+            return;
+        }
+
+        // Map severity to CVSS score ranges
+        const severityRanges = {
+            'critical': { min: 9.0, max: 10.0, label: 'Critical' },
+            'high': { min: 7.0, max: 8.9, label: 'High' },
+            'medium': { min: 4.0, max: 6.9, label: 'Medium' },
+            'low': { min: 0.0, max: 3.9, label: 'Low' }
+        };
+
+        const range = severityRanges[severity.toLowerCase()];
+        if (!range) {
+            this.showToast('Invalid severity filter', 'error');
+            return;
+        }
+
+        // Filter writeups by CVSS score or severity text
+        const filteredWriteups = this.currentProject.writeups.filter(writeup => {
+            const score = parseFloat(writeup.cvssScore) || 0;
+            const matchesScore = score >= range.min && score <= range.max;
+            const matchesText = writeup.severity && writeup.severity.toLowerCase() === severity.toLowerCase();
+            return matchesScore || matchesText;
+        });
+
+        // If the writeupEditor has a native filter method, use it
+        if (this.writeupEditor && typeof this.writeupEditor.filterBySeverity === 'function') {
+            this.writeupEditor.filterBySeverity(severity);
+        } else {
+            // Otherwise, reload with filtered list
+            this.writeupEditor.loadWriteups(
+                filteredWriteups,
+                (writeups) => {
+                    this.currentProject.writeups = this.currentProject.writeups; // Keep original
+                }
+            );
+        }
+
+        // Show active filter indicator
+        this.showFilterChip(range.label);
+        this.showToast(`Filtering ${filteredWriteups.length} ${range.label} severity findings`, 'info');
+    }
+
+    showFilterChip(severityLabel) {
+        // Remove existing chip
+        const existingChip = document.querySelector('.filter-chip');
+        if (existingChip) {
+            existingChip.remove();
+        }
+
+        // Create new chip
+        const chip = document.createElement('div');
+        chip.className = 'filter-chip';
+        chip.innerHTML = `
+            <span>Filtered: ${severityLabel}</span>
+            <button class="filter-chip-close" aria-label="Clear filter" title="Clear filter">&times;</button>
+        `;
+
+        const writeupsTab = document.getElementById('writeupsTab');
+        if (writeupsTab) {
+            writeupsTab.insertBefore(chip, writeupsTab.firstChild);
+
+            // Close button handler
+            chip.querySelector('.filter-chip-close').addEventListener('click', () => {
+                chip.remove();
+                this.loadWriteups(); // Reload all writeups
+                this.showToast('Filter cleared', 'success');
+            });
+        }
+    }
+
+    // ========== Toast Notifications ==========
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        const icons = {
+            success: '✓',
+            error: '✗',
+            info: 'ℹ',
+            warning: '⚠'
+        };
+        
+        toast.innerHTML = `
+            <span class="toast-icon">${icons[type] || icons.info}</span>
+            <span class="toast-message">${message}</span>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Trigger animation
+        setTimeout(() => toast.classList.add('show'), 10);
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // ========== Last Action Resume ==========
+    saveLastAction(actionType, data = null) {
+        if (!this.currentProject) return;
+
+        const lastAction = {
+            type: actionType,
+            data: data,
+            timestamp: Date.now(),
+            project: this.currentProject.id
+        };
+
+        try {
+            localStorage.setItem('hackerNotes_lastAction', JSON.stringify(lastAction));
+        } catch (error) {
+            console.error('Failed to save last action:', error);
+        }
+    }
+
+    loadLastAction() {
+        try {
+            const stored = localStorage.getItem('hackerNotes_lastAction');
+            if (stored) {
+                const lastAction = JSON.parse(stored);
+                
+                // Check if action is less than 24 hours old
+                const hoursSince = (Date.now() - lastAction.timestamp) / (1000 * 60 * 60);
+                if (hoursSince < 24 && lastAction.project === this.currentProject?.id) {
+                    return lastAction;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load last action:', error);
+        }
+        return null;
+    }
+
+    resumeLastAction() {
+        const lastAction = this.loadLastAction();
+        if (!lastAction) {
+            this.showToast('No recent action to resume', 'info');
+            return;
+        }
+
+        // Resume the action
+        switch(lastAction.type) {
+            case 'continue-testing':
+                this.switchTab('checklist');
+                this.showToast('Resumed testing checklist', 'success');
+                break;
+            case 'add-finding':
+            case 'view-findings':
+                this.switchTab('writeups');
+                this.showToast('Resumed findings review', 'success');
+                break;
+            case 'filter-findings':
+                if (lastAction.data) {
+                    this.switchTab('writeups');
+                    this.applyWriteupsSeverityFilter(lastAction.data);
+                }
+                break;
+            case 'start-workflow':
+                this.switchTab('workflows');
+                this.showToast('Resumed workflow', 'success');
+                break;
+            case 'quick-note':
+                this.switchTab('notes');
+                this.showToast('Resumed notes', 'success');
+                break;
+        }
     }
 }
 
