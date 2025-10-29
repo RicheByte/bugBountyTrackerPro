@@ -226,7 +226,7 @@ Having trouble?
 - [ ] Advanced reporting templates
 - [ ] Integration with bug tracking platforms
 
-### Version 2.2
+### Version 3.2
 - [ ] Mobile companion app
 - [ ] Cloud synchronization
 - [ ] Advanced analytics
