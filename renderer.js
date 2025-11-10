@@ -241,6 +241,29 @@ class BugBountyTracker {
         }
     }
 
+    autoSaveProject() {
+        if (!this.currentProject) return;
+
+        // Debounce auto-save to prevent excessive file writes
+        clearTimeout(this.autoSaveTimeout);
+        this.autoSaveTimeout = setTimeout(async () => {
+            try {
+                const result = await ipcRenderer.invoke('save-project', this.currentProject);
+                if (result.success) {
+                    console.log('Project auto-saved successfully');
+                    // Show subtle indicator
+                    this.showToast('Changes saved', 'success');
+                } else {
+                    console.error('Auto-save failed:', result.error);
+                    this.showToast('Auto-save failed - please save manually', 'warning');
+                }
+            } catch (error) {
+                console.error('Auto-save error:', error);
+                this.showToast('Auto-save error - please save manually', 'error');
+            }
+        }, 2000); // Auto-save 2 seconds after last change
+    }
+
     async loadProject() {
         const result = await ipcRenderer.invoke('load-project');
         if (result.success) {
@@ -715,6 +738,8 @@ class BugBountyTracker {
             this.currentProject.writeups,
             (writeups) => {
                 this.currentProject.writeups = writeups;
+                // Auto-save project when writeups change
+                this.autoSaveProject();
             }
         );
     }
@@ -737,6 +762,8 @@ class BugBountyTracker {
             this.currentProject.workflows,
             (workflows) => {
                 this.currentProject.workflows = workflows;
+                // Auto-save project when workflows change
+                this.autoSaveProject();
             }
         );
     }
@@ -759,6 +786,8 @@ class BugBountyTracker {
             this.currentProject.projectNotes,
             (notes) => {
                 this.currentProject.projectNotes = notes;
+                // Auto-save project when notes change
+                this.autoSaveProject();
             }
         );
     }

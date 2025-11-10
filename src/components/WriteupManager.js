@@ -208,13 +208,19 @@ class WriteupManager {
     }
 
     bindEditorEvents() {
-        // Auto-save on title change
+        // Auto-save on title change (debounced)
+        let titleSaveTimeout;
         document.getElementById('writeupTitle')?.addEventListener('input', (e) => {
             if (this.currentWriteup) {
                 this.currentWriteup.title = e.target.value;
                 this.currentWriteup.updatedAt = new Date().toISOString();
                 this.renderList();
-                this.notifyUpdate();
+                
+                // Debounce the update notification
+                clearTimeout(titleSaveTimeout);
+                titleSaveTimeout = setTimeout(() => {
+                    this.notifyUpdate();
+                }, 500);
             }
         });
 
@@ -236,17 +242,67 @@ class WriteupManager {
             this.exportWriteup();
         });
 
+        // Auto-save textareas (debounced)
+        let textareaSaveTimeout;
+        const textareaIds = ['writeupDescription', 'writeupImpact', 'writeupRemediation'];
+        textareaIds.forEach(id => {
+            document.getElementById(id)?.addEventListener('input', (e) => {
+                if (this.currentWriteup) {
+                    clearTimeout(textareaSaveTimeout);
+                    textareaSaveTimeout = setTimeout(() => {
+                        const field = id.replace('writeup', '').toLowerCase();
+                        this.currentWriteup[field] = e.target.value;
+                        this.currentWriteup.updatedAt = new Date().toISOString();
+                        this.notifyUpdate();
+                    }, 1000);
+                }
+            });
+        });
+
         // Severity change
         document.getElementById('writeupSeverity')?.addEventListener('change', (e) => {
             this.currentWriteup.severity = e.target.value;
+            this.currentWriteup.updatedAt = new Date().toISOString();
             this.renderList();
             this.notifyUpdate();
+        });
+
+        // Auto-save step inputs
+        let stepSaveTimeout;
+        document.querySelectorAll('.step-input').forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (this.currentWriteup) {
+                    clearTimeout(stepSaveTimeout);
+                    stepSaveTimeout = setTimeout(() => {
+                        this.currentWriteup.steps[index] = e.target.value;
+                        this.currentWriteup.updatedAt = new Date().toISOString();
+                        this.notifyUpdate();
+                    }, 1000);
+                }
+            });
+        });
+
+        // Auto-save reference inputs
+        let refSaveTimeout;
+        document.querySelectorAll('.reference-input').forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (this.currentWriteup) {
+                    clearTimeout(refSaveTimeout);
+                    refSaveTimeout = setTimeout(() => {
+                        this.currentWriteup.references[index] = e.target.value;
+                        this.currentWriteup.updatedAt = new Date().toISOString();
+                        this.notifyUpdate();
+                    }, 1000);
+                }
+            });
         });
 
         // Add step
         document.getElementById('addStep')?.addEventListener('click', () => {
             this.currentWriteup.steps.push('');
+            this.currentWriteup.updatedAt = new Date().toISOString();
             this.renderEditor();
+            this.notifyUpdate();
         });
 
         // Remove step
@@ -254,14 +310,18 @@ class WriteupManager {
             btn.addEventListener('click', (e) => {
                 const index = parseInt(e.target.dataset.index);
                 this.currentWriteup.steps.splice(index, 1);
+                this.currentWriteup.updatedAt = new Date().toISOString();
                 this.renderEditor();
+                this.notifyUpdate();
             });
         });
 
         // Add reference
         document.getElementById('addReference')?.addEventListener('click', () => {
             this.currentWriteup.references.push('');
+            this.currentWriteup.updatedAt = new Date().toISOString();
             this.renderEditor();
+            this.notifyUpdate();
         });
 
         // Remove reference
@@ -269,7 +329,9 @@ class WriteupManager {
             btn.addEventListener('click', (e) => {
                 const index = parseInt(e.target.dataset.index);
                 this.currentWriteup.references.splice(index, 1);
+                this.currentWriteup.updatedAt = new Date().toISOString();
                 this.renderEditor();
+                this.notifyUpdate();
             });
         });
     }

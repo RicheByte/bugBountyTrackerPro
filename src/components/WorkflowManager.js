@@ -191,22 +191,32 @@ class WorkflowManager {
     }
 
     bindBuilderEvents() {
-        // Auto-save on title change
+        // Auto-save on title change (debounced)
+        let titleSaveTimeout;
         document.getElementById('workflowTitle')?.addEventListener('input', (e) => {
             if (this.currentWorkflow) {
                 this.currentWorkflow.title = e.target.value;
                 this.currentWorkflow.updatedAt = new Date().toISOString();
                 this.renderList();
-                this.notifyUpdate();
+                
+                clearTimeout(titleSaveTimeout);
+                titleSaveTimeout = setTimeout(() => {
+                    this.notifyUpdate();
+                }, 500);
             }
         });
 
-        // Auto-save on description change
+        // Auto-save on description change (debounced)
+        let descSaveTimeout;
         document.getElementById('workflowDescription')?.addEventListener('input', (e) => {
             if (this.currentWorkflow) {
                 this.currentWorkflow.description = e.target.value;
                 this.currentWorkflow.updatedAt = new Date().toISOString();
-                this.notifyUpdate();
+                
+                clearTimeout(descSaveTimeout);
+                descSaveTimeout = setTimeout(() => {
+                    this.notifyUpdate();
+                }, 1000);
             }
         });
 

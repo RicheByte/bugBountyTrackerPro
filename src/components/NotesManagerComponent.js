@@ -247,13 +247,19 @@ class NotesManagerComponent {
     }
 
     bindEditorEvents() {
-        // Auto-save on title change
+        // Auto-save on title change (debounced)
+        let titleSaveTimeout;
         document.getElementById('noteTitle')?.addEventListener('input', (e) => {
             if (this.currentNote) {
                 this.currentNote.title = e.target.value;
                 this.currentNote.updatedAt = new Date().toISOString();
                 this.renderList();
-                this.notifyUpdate();
+                
+                // Debounce the update notification to prevent excessive saves
+                clearTimeout(titleSaveTimeout);
+                titleSaveTimeout = setTimeout(() => {
+                    this.notifyUpdate();
+                }, 300);
             }
         });
 
@@ -267,7 +273,7 @@ class NotesManagerComponent {
                     this.currentNote.updatedAt = new Date().toISOString();
                     this.renderList();
                     this.notifyUpdate();
-                }, 500); // Save after 500ms of no typing
+                }, 1000); // Save after 1 second of no typing (increased from 500ms)
             }
         });
 
